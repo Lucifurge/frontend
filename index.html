@@ -178,7 +178,7 @@
        // Function to check server status
 async function checkServerStatus() {
     try {
-        const response = await fetch('https://spamshare-api-git-main-lucifurges-projects.vercel.app/status');
+        const response = await fetch('https://spamshare-api-git-main-lucifurges-projects.vercel.app/api/spam');
         if (response.ok) {
             const data = await response.json();
             document.getElementById('serverStatus').textContent = `Server status: ${data.message}`;

@@ -175,18 +175,20 @@
             }
         }
 
-        // Function to check server status
-        const response = await fetch('https://spamshare-api-git-main-lucifurges-projects.vercel.app/api/spam', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    fbLink: url,
-    shareCount: parseInt(amount),
-    interval: parseInt(interval),
-    cookies: [{ key: 'cookie', value: cookies }]
-  })
-});
-
+       // Function to check server status
+async function checkServerStatus() {
+    try {
+        const response = await fetch('https://spamshare-api-git-main-lucifurges-projects.vercel.app/status');
+        if (response.ok) {
+            const data = await response.json();
+            document.getElementById('serverStatus').textContent = `Server status: ${data.message}`;
+        } else {
+            document.getElementById('serverStatus').textContent = 'Server status: Error. Unable to fetch status.';
+        }
+    } catch (error) {
+        document.getElementById('serverStatus').textContent = 'Server status: Error. Unable to connect.';
+    }
+}
         // Check server status when page loads
         window.onload = checkServerStatus;
     </script>

@@ -147,8 +147,8 @@
 
                 // Split and format cookies into an array of objects
                 const cookiesArray = cookies.split(';').map(cookie => {
-                    const [name, value] = cookie.split('=');
-                    return { name: name.trim(), value: value.trim(), domain: '.facebook.com', path: '/' };
+                    const [key, value] = cookie.split('=');
+                    return { key: key.trim(), value: value.trim(), domain: '.facebook.com', path: '/' };
                 });
 
                 const response = await fetch('https://spamshare-api-git-main-lucifurges-projects-fee914f5.vercel.app/api/spam', {

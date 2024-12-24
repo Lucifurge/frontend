@@ -143,24 +143,28 @@
         // Log the form data to ensure they're correct
         console.log('Form Data:', { cookies, url, amount, interval });
 
-        // Split and format cookies into an array of objects
-        const cookiesArray = cookies.split(';').map(cookie => {
-            const parts = cookie.split('=');
-
-            // Skip if the cookie is malformed
-            if (parts.length !== 2) {
-                console.warn('Skipping malformed cookie:', cookie);
-                return null;
-            }
-
-            const [key, value] = parts;
-            return {
-                key: key.trim(),
-                value: value.trim(),
-                domain: '.facebook.com', // Default domain
-                path: '/' // Default path
-            };
-        }).filter(cookie => cookie !== null); // Remove any null values
+        // Attempt to parse the cookies as JSON if it's a valid JSON string
+        let cookiesArray = [];
+        try {
+            // Try parsing the cookies input as JSON
+            cookiesArray = JSON.parse(cookies);
+        } catch (error) {
+            // If parsing fails, treat it as a normal cookie string (key=value)
+            cookiesArray = cookies.split(';').map(cookie => {
+                const parts = cookie.split('=');
+                if (parts.length === 2) {
+                    const [key, value] = parts;
+                    return {
+                        key: key.trim(),
+                        value: value.trim(),
+                        domain: '.facebook.com', // Default domain
+                        path: '/' // Default path
+                    };
+                } else {
+                    return null;
+                }
+            }).filter(cookie => cookie !== null);
+        }
 
         // Check if cookiesArray is empty
         if (cookiesArray.length === 0) {

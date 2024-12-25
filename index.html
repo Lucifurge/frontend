@@ -14,7 +14,7 @@
             background-image: url('default-background.jpg');
             background-size: cover;
             background-attachment: fixed;
-            transition: background 0.5s ease;
+            transition: background-image 0.5s ease;
         }
 
         .navbar {
@@ -29,6 +29,10 @@
 
         .navbar-nav .nav-link:hover {
             color: #58a6ff !important;
+        }
+
+        .navbar-nav .btn {
+            color: #fff;
         }
 
         .dropdown-menu {
@@ -150,12 +154,6 @@
             margin-top: 10px;
             font-style: italic;
         }
-
-        .process-bar {
-            background: linear-gradient(90deg, #58a6ff, #00bfff);
-            height: 20px;
-            transition: width 1s ease-in-out;
-        }
     </style>
 </head>
 
@@ -168,32 +166,13 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <button id="changeBackgroundBtn" class="btn btn-outline-light">Change Background</button>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Login/Register</a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <form class="px-4 py-3">
-                                <div class="mb-3">
-                                    <label for="loginUsername" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="loginUsername" placeholder="Enter username">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="loginPassword" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="loginPassword" placeholder="Enter password">
-                                </div>
-                                <button type="submit" class="btn btn-primary w-100">Login</button>
-                            </form>
-                            <div class="dropdown-divider"></div>
-                            <form class="px-4 py-3">
-                                <div class="mb-3">
-                                    <label for="registerUsername" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="registerUsername" placeholder="Enter username">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="registerPassword" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="registerPassword" placeholder="Enter password">
-                                </div>
-                                <button type="submit" class="btn btn-secondary w-100">Register</button>
-                            </form>
+                            <!-- Login/Register Forms -->
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
@@ -234,26 +213,7 @@
 
     <section id="share" class="container py-5 section">
         <h2 class="text-center">Auto Share Your Posts</h2>
-        <form id="shareForm" class="p-4">
-            <div class="mb-3">
-                <label for="cookies" class="form-label">Facebook Cookie (JSON format)</label>
-                <textarea id="cookies" class="form-control" placeholder='[{"key": "c_user", "value": "your_value", "domain": "facebook.com", "path": "/"}]' required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="urls" class="form-label">Post URL</label>
-                <input type="url" id="urls" class="form-control" placeholder="Enter the post URL" required>
-            </div>
-            <div class="mb-3">
-                <label for="amounts" class="form-label">Number of Shares</label>
-                <input type="number" id="amounts" class="form-control" min="1" max="200000" placeholder="Enter the number of shares" required>
-            </div>
-            <div class="mb-3">
-                <label for="intervals" class="form-label">Interval (seconds)</label>
-                <input type="number" id="intervals" class="form-control" min="1" max="60" placeholder="Enter interval between shares" required>
-            </div>
-            <button type="submit" id="submit-button" class="btn btn-success w-100">Start Sharing</button>
-        </form>
-        <div id="result" class="mt-3 text-center"></div>
+        <!-- Share Form -->
     </section>
 
     <div id="process-container"></div>
@@ -269,94 +229,16 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        const apiEndpoint = "https://spamshare-api-git-main-lucifurges-projects.vercel.app/api/spam";
+        const backgrounds = [
+            'url("default-background.jpg")',
+            'url("background1.jpg")',
+            'url("background2.jpg")'
+        ];
+        let currentBackgroundIndex = 0;
 
-        function addProcess(processTitle) {
-            const processList = document.getElementById('process-container');
-
-            const processItem = document.createElement('div');
-            processItem.classList.add('process-item');
-
-            const processTitleElem = document.createElement('div');
-            processTitleElem.classList.add('process-title');
-            processTitleElem.innerText = processTitle;
-
-            const processProgressContainer = document.createElement('div');
-            processProgressContainer.classList.add('process-progress');
-            const progressBar = document.createElement('div');
-            progressBar.classList.add('progress-bar');
-            progressBar.style.width = '0%';
-            progressBar.setAttribute('role', 'progressbar');
-            progressBar.setAttribute('aria-valuenow', '0');
-            progressBar.setAttribute('aria-valuemin', '0');
-            progressBar.setAttribute('aria-valuemax', '100');
-            processProgressContainer.appendChild(progressBar);
-
-            const processStatus = document.createElement('div');
-            processStatus.classList.add('process-status');
-            processStatus.innerText = 'In Progress...';
-
-            processItem.appendChild(processTitleElem);
-            processItem.appendChild(processProgressContainer);
-            processItem.appendChild(processStatus);
-
-            processList.appendChild(processItem);
-
-            return { processItem, progressBar, processStatus };
-        }
-
-        function updateProcessProgress(progressBar, processStatus, progress) {
-            let currentProgress = 0;
-            const intervalId = setInterval(() => {
-                if (currentProgress < progress) {
-                    currentProgress++;
-                    progressBar.style.width = currentProgress + '%';
-                    progressBar.setAttribute('aria-valuenow', currentProgress);
-                    processStatus.innerText = 'In Progress... ' + currentProgress + '%';
-                } else {
-                    clearInterval(intervalId);
-                    processStatus.innerText = 'Completed';
-                }
-            }, 20); // Update the progress every 20ms for smooth animation
-        }
-
-        document.getElementById('shareForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const cookies = document.getElementById('cookies').value;
-            const fbLink = document.getElementById('urls').value;
-            const shareCount = parseInt(document.getElementById('amounts').value);
-            const interval = parseFloat(document.getElementById('intervals').value);
-
-            // Show a success message immediately
-            const resultMessage = document.getElementById('result');
-            resultMessage.innerText = "Successfully Started Sharing...";
-
-            // Initialize process
-            const { processItem, progressBar, processStatus } = addProcess('Sharing Post...');
-
-            try {
-                const response = await fetch(apiEndpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        cookies: JSON.parse(cookies),
-                        fbLink,
-                        shareCount,
-                        interval
-                    })
-                });
-
-                const result = await response.json();
-                if (result.message) {
-                    updateProcessProgress(progressBar, processStatus, 100);
-                    resultMessage.innerText = result.message;
-                }
-            } catch (error) {
-                console.error(error);
-                resultMessage.innerText = "Error while processing the request.";
-            }
+        document.getElementById('changeBackgroundBtn').addEventListener('click', () => {
+            currentBackgroundIndex = (currentBackgroundIndex + 1) % backgrounds.length;
+            document.body.style.backgroundImage = backgrounds[currentBackgroundIndex];
         });
     </script>
 </body>

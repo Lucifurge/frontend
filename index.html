@@ -15,65 +15,16 @@
             background-attachment: fixed;
             transition: background 0.5s ease;
         }
-        .section {
-            margin-top: 20px;
-        }
-        .form-control, .btn {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            color: #c9d1d9;
-        }
-        .form-control:focus, .btn:focus {
-            box-shadow: none;
-            border-color: #58a6ff;
-        }
-        .btn-success {
-            background-color: #2f9e44;
-            border-color: #2f9e44;
-        }
-        .btn-success:hover {
-            background-color: #2a8b3d;
-            border-color: #2a8b3d;
-        }
-        .process-item {
-            background-color: #161b22;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-        .process-title {
-            font-weight: bold;
-        }
-        .process-progress {
-            width: 100%;
-            background-color: #30363d;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-top: 5px;
-        }
-        .progress-bar {
-            height: 10px;
-            background-color: #58a6ff;
-            width: 0%;
-        }
-        .process-status {
-            margin-top: 5px;
-            font-size: 14px;
-        }
+        /* Other styles here... */
     </style>
 </head>
 <body>
-    <header class="bg-dark text-light py-3">
-        <div class="container text-center">
-            <h1>Ishaanshares</h1>
-            <p>Share your posts automatically with ease.</p>
-        </div>
-    </header>
+    <!-- Navbar, Hero, Features, etc. -->
 
     <section id="share" class="container py-5 section">
         <h2 class="text-center">Auto Share Your Posts</h2>
         <form id="shareForm" class="p-4">
+            <!-- Form Inputs -->
             <div class="mb-3">
                 <label for="cookies" class="form-label">Facebook Cookie (JSON format)</label>
                 <textarea id="cookies" class="form-control" placeholder='[{"key": "c_user", "value": "your_value", "domain": "facebook.com", "path": "/"}]' required></textarea>

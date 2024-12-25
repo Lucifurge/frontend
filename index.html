@@ -128,6 +128,35 @@
             background-color: #45a049;
             border-color: #45a049;
         }
+
+        .modal-content {
+            background-color: #333;
+            color: #e0e0e0;
+            border-radius: 10px;
+        }
+
+        .modal-header,
+        .modal-footer {
+            background-color: #222;
+        }
+
+        .modal-header h5 {
+            color: #fff;
+        }
+
+        .form-label {
+            color: #ccc;
+        }
+
+        .form-control {
+            background-color: #444;
+            color: #fff;
+            border-color: #555;
+        }
+
+        .form-control:focus {
+            border-color: #4caf50;
+        }
     </style>
 </head>
 
@@ -148,7 +177,7 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a></li>
-                            <li><a class="dropdown-item" href="#">Register</a></li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Register</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -222,6 +251,31 @@
                             <input type="password" id="password" class="form-control" placeholder="Enter password" required>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="mb-3">
+                            <label for="newUsername" class="form-label">Username</label>
+                            <input type="text" id="newUsername" class="form-control" placeholder="Create a username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">Password</label>
+                            <input type="password" id="newPassword" class="form-control" placeholder="Create a password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
                     </form>
                 </div>
             </div>

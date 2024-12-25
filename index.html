@@ -311,43 +311,50 @@
         }
 
         document.getElementById('shareForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const cookies = document.getElementById('cookies').value;
-            const fbLink = document.getElementById('urls').value;
-            const shareCount = parseInt(document.getElementById('amounts').value);
-            const interval = parseFloat(document.getElementById('intervals').value);
+    event.preventDefault();
+    const cookies = document.getElementById('cookies').value;
+    const fbLink = document.getElementById('urls').value;
+    const shareCount = parseInt(document.getElementById('amounts').value);
+    const interval = parseFloat(document.getElementById('intervals').value);
 
-            // Show a success message immediately
-            const resultMessage = document.getElementById('result');
-            resultMessage.innerText = "Successfully Started Sharing...";
+    // Show a success message immediately
+    const resultMessage = document.getElementById('result');
+    resultMessage.innerText = "Successfully Started Sharing...";
 
-            // Initialize process
-            const { processItem, progressBar, processStatus } = addProcess('Sharing Post...');
+    // Initialize process
+    const { processItem, progressBar, processStatus } = addProcess('Sharing Post...');
 
-            try {
-                const response = await fetch(apiEndpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        cookies: JSON.parse(cookies),
-                        fbLink,
-                        shareCount,
-                        interval
-                    })
-                });
-
-                const result = await response.json();
-                if (result.message) {
-                    updateProcessProgress(progressBar, processStatus, 100);
-                    resultMessage.innerText = result.message;
-                }
-            } catch (error) {
-                console.error(error);
-                resultMessage.innerText = "Error while processing the request.";
-            }
+    try {
+        const response = await fetch("https://spamshare-api-git-main-lucifurges-projects.vercel.app/api/spam", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                cookies: JSON.parse(cookies),
+                fbLink,
+                shareCount,
+                interval
+            })
         });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch data from the API');
+        }
+
+        const result = await response.json();
+        
+        if (result.message) {
+            updateProcessProgress(progressBar, processStatus, 100);
+            resultMessage.innerText = result.message;
+        }
+    } catch (error) {
+        console.error(error);
+        resultMessage.innerText = "Error while processing the request.";
+    }
+});
+
+
     </script>
 </body>
 

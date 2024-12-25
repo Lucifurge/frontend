@@ -229,6 +229,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Background Change Logic
         const backgrounds = [
             'url("default-background.jpg")',
             'url("background1.jpg")',
@@ -240,6 +241,47 @@
             currentBackgroundIndex = (currentBackgroundIndex + 1) % backgrounds.length;
             document.body.style.backgroundImage = backgrounds[currentBackgroundIndex];
         });
+
+        // Progress Bar Logic
+        let processCounter = 0;
+
+        function createProcessItem(title, progress) {
+            const processItem = document.createElement('div');
+            processItem.classList.add('process-item');
+            processItem.innerHTML = `
+                <div class="process-title">${title}</div>
+                <div class="process-progress">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: ${progress}%" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="process-status">In Progress...</div>
+            `;
+            document.getElementById('process-container').appendChild(processItem);
+        }
+
+        // Simulate progress
+        function simulateProgress() {
+            processCounter++;
+            createProcessItem(`Processing Task ${processCounter}`, 0);
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                if (progress < 100) {
+                    progress += 5;
+                    const processItems = document.querySelectorAll('.process-item');
+                    processItems[processCounter - 1].querySelector('.progress-bar').style.width = `${progress}%`;
+                } else {
+                    clearInterval(interval);
+                    processItems[processCounter - 1].querySelector('.process-status').textContent = 'Completed';
+                }
+            }, 200);
+        }
+
+        // Start the progress simulation when the page loads
+        window.onload = () => {
+            setInterval(simulateProgress, 3000); // New process every 3 seconds
+        }
     </script>
 </body>
 

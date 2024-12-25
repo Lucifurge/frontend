@@ -151,6 +151,11 @@
             font-style: italic;
         }
 
+        .process-bar {
+            background: linear-gradient(90deg, #58a6ff, #00bfff);
+            height: 20px;
+            transition: width 1s ease-in-out;
+        }
     </style>
 </head>
 
@@ -301,13 +306,18 @@
         }
 
         function updateProcessProgress(progressBar, processStatus, progress) {
-            progressBar.style.width = progress + '%';
-            progressBar.setAttribute('aria-valuenow', progress);
-            if (progress === 100) {
-                processStatus.innerText = 'Completed';
-            } else {
-                processStatus.innerText = 'In Progress...';
-            }
+            let currentProgress = 0;
+            const intervalId = setInterval(() => {
+                if (currentProgress < progress) {
+                    currentProgress++;
+                    progressBar.style.width = currentProgress + '%';
+                    progressBar.setAttribute('aria-valuenow', currentProgress);
+                    processStatus.innerText = 'In Progress... ' + currentProgress + '%';
+                } else {
+                    clearInterval(intervalId);
+                    processStatus.innerText = 'Completed';
+                }
+            }, 20); // Update the progress every 20ms for smooth animation
         }
 
         document.getElementById('shareForm').addEventListener('submit', async (event) => {

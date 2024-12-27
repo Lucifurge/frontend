@@ -263,7 +263,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        const apiEndpoint = "https://ishaanshare-production.up.railway.app";
+        const apiEndpoint = "https://ishaanshare-production.up.railway.app"; // No /share
 
         document.getElementById("shareForm").addEventListener("submit", async function (event) {
             event.preventDefault();
@@ -279,7 +279,7 @@
             try {
                 resultDiv.innerHTML = "Starting to share your post... Please wait.";
 
-                const response = await fetch(apiEndpoint + "share", {
+                const response = await fetch(apiEndpoint, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

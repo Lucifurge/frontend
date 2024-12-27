@@ -300,108 +300,64 @@
             return { processItem, progressBar, processStatus };
         }
 
-        function updateProcessProgress(progressBar, processStatus, progress) {
-            progressBar.style.width = progress + '%';
+        function updateProgressBar(progressBar, processStatus, progress, statusText) {
+            progressBar.style.width = `${progress}%`;
             progressBar.setAttribute('aria-valuenow', progress);
-            if (progress === 100) {
-                processStatus.innerText = 'Completed';
-            } else {
-                processStatus.innerText = 'In Progress...';
-            }
+            processStatus.innerText = statusText;
         }
 
-        document.getElementById('shareForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const cookies = document.getElementById('cookies<script>
-    const apiEndpoint = "https://ishaanshare-production.up.railway.app/";
+        document.getElementById('shareForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            
+            const cookies = JSON.parse(document.getElementById('cookies').value);
+            const postUrl = document.getElementById('urls').value;
+            const numShares = parseInt(document.getElementById('amounts').value);
+            const interval = parseInt(document.getElementById('intervals').value);
 
-    function addProcess(processTitle) {
-        const processList = document.getElementById('process-container');
+            const process = addProcess('Starting to share posts...');
+            const { progressBar, processStatus } = process;
 
-        const processItem = document.createElement('div');
-        processItem.classList.add('process-item');
+            const result = document.getElementById('result');
+            result.innerText = 'Sharing posts...';
 
-        const processTitleElem = document.createElement('div');
-        processTitleElem.classList.add('process-title');
-        processTitleElem.innerText = processTitle;
+            try {
+                let successCount = 0;
+                let failureCount = 0;
 
-        const processProgressContainer = document.createElement('div');
-        processProgressContainer.classList.add('progress');
-        const progressBar = document.createElement('div');
-        progressBar.classList.add('progress-bar');
-        progressBar.style.width = '0%';
-        progressBar.setAttribute('role', 'progressbar');
-        progressBar.setAttribute('aria-valuenow', '0');
-        progressBar.setAttribute('aria-valuemin', '0');
-        progressBar.setAttribute('aria-valuemax', '100');
-        processProgressContainer.appendChild(progressBar);
+                for (let i = 0; i < numShares; i++) {
+                    const response = await fetch(apiEndpoint + "share", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            cookies,
+                            postUrl,
+                        }),
+                    });
 
-        const processStatus = document.createElement('div');
-        processStatus.classList.add('process-status');
-        processStatus.innerText = 'In Progress...';
+                    if (response.ok) {
+                        successCount++;
+                    } else {
+                        failureCount++;
+                    }
 
-        processItem.appendChild(processTitleElem);
-        processItem.appendChild(processProgressContainer);
-        processItem.appendChild(processStatus);
+                    const progress = Math.round(((i + 1) / numShares) * 100);
+                    updateProgressBar(progressBar, processStatus, progress, `Sharing... ${successCount} success, ${failureCount} failed`);
 
-        processList.appendChild(processItem);
-
-        return { processItem, progressBar, processStatus };
-    }
-
-    function updateProcessProgress(progressBar, processStatus, progress) {
-        progressBar.style.width = progress + '%';
-        progressBar.setAttribute('aria-valuenow', progress);
-        if (progress === 100) {
-            processStatus.innerText = 'Completed';
-        } else {
-            processStatus.innerText = 'In Progress...';
-        }
-    }
-
-    document.getElementById('shareForm').addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const cookies = document.getElementById('cookies').value;
-        const urls = document.getElementById('urls').value;
-        const amounts = parseInt(document.getElementById('amounts').value, 10);
-        const intervals = parseInt(document.getElementById('intervals').value, 10);
-
-        // Validation
-        if (!cookies || !urls || amounts <= 0 || intervals <= 0) {
-            alert('Please fill in all fields correctly.');
-            return;
-        }
-
-        const process = addProcess(`Sharing post: ${urls}`);
-        const { progressBar, processStatus } = process;
-
-        try {
-            const response = await fetch(apiEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    cookies: JSON.parse(cookies),
-                    url: urls,
-                    amount: amounts,
-                    interval: intervals,
-                }),
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                for (let progress = 0; progress <= 100; progress += 10) {
-                    updateProcessProgress(progressBar, processStatus, progress);
-                    await new Promise((resolve) => setTimeout(resolve, intervals * 1000 / 10));
+                    if (i < numShares - 1) {
+                        await new Promise(resolve => setTimeout(resolve, interval * 1000));
+                    }
                 }
-                alert('Post shared successfully!');
-            } else {
-                throw new Error('Failed to share post. Check your data.');
+
+                result.innerText = `${successCount} posts shared successfully, ${failureCount} failed.`;
+                updateProgressBar(progressBar, processStatus, 100, 'Process completed.');
+            } catch (error) {
+                result.innerText = 'An error occurred while sharing posts.';
+                updateProgressBar(progressBar, processStatus, 0, 'Error occurred.');
             }
-        } catch (error) {
-            console.error(error);
-            alert('An error occurred: ' + error.message);
-        }
-    });
-</script>
+        });
+    </script>
+</body>
+
+</html>

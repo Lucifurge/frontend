@@ -1,301 +1,1384 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ishaanshares</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <title>RyoBoosting - Professional Facebook Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #1e1e2f;
-            color: #dcdcdc;
-            font-family: "Fira Code", monospace;
-            background-image: linear-gradient(120deg, #1f2937, #111827);
-            background-attachment: fixed;
-            transition: background 0.5s ease;
+        :root {
+            --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
         }
 
-        .navbar {
-            background: linear-gradient(90deg, #2c2c54, #212642);
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        * {
+            font-family: 'Inter', sans-serif;
         }
 
-        .navbar-brand {
-            font-weight: bold;
-            color: #58a6ff !important;
-            font-size: 1.5rem;
+        /* Animation Keyframes */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
-        .navbar-nav .nav-link {
-            color: #dcdcdc !important;
-            font-weight: bold;
-            margin: 0 10px;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #7b92ff !important;
-            transform: scale(1.1);
-        }
-
-        .dropdown-menu {
-            background: #2a2a40;
-            border: none;
-            border-radius: 8px;
-        }
-
-        .dropdown-item {
-            color: #dcdcdc;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        .dropdown-item:hover {
-            background: #1e1e2f;
-            color: #58a6ff;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 100px 20px;
-            background: linear-gradient(180deg, rgba(30, 30, 47, 0.95), rgba(18, 18, 32, 0.95));
-            border-radius: 15px;
-            color: white;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            margin-top: 1rem;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            font-weight: bold;
-        }
-
-        @media (min-width: 768px) {
-            .hero h1 {
-                font-size: 3.5rem;
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        .hero p {
-            font-size: 1.5rem;
-            margin: 20px 0;
+        @keyframes slide-in {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
-        .hero .btn {
-            background: #58a6ff;
-            color: white;
-            font-size: 1.2rem;
-            padding: 12px 25px;
-            border-radius: 25px;
-            box-shadow: 0 4px 10px rgba(88, 166, 255, 0.5);
-            transition: background 0.3s ease, box-shadow 0.3s ease;
+        @keyframes slide-out {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
         }
 
-        .hero .btn:hover {
-            background: #7b92ff;
-            box-shadow: 0 6px 15px rgba(123, 146, 255, 0.7);
+        /* Utility Classes */
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
-        .features {
-            padding: 50px 20px;
+        .card-hover {
+            transition: all 0.3s ease;
         }
 
-        .feature-card {
-            background: #2a2a40;
-            border: 1px solid #383850;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .footer {
-            background: linear-gradient(90deg, #212642, #2c2c54);
-            color: #dcdcdc;
-            text-align: center;
-            padding: 20px;
-            border-top: 1px solid #383850;
-        }
-
-        .footer a {
-            color: #58a6ff;
-            margin: 0 10px;
-            transition: color 0.3s ease;
-        }
-
-        .footer a:hover {
-            color: #7b92ff;
-        }
-
-        #reactionForm {
-            background: #1f1f38;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease;
-        }
-
-        #reactionForm:hover {
+        .card-hover:hover {
             transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
         }
 
-        .form-control {
-            background: #2a2a40;
-            color: #dcdcdc;
-            border: 1px solid #383850;
-            transition: background 0.3s ease, border-color 0.3s ease;
+        .gradient-text {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
-        .form-control:focus {
-            background: #1f1f38;
-            border-color: #58a6ff;
-            color: #dcdcdc;
-            box-shadow: none;
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
         }
 
-        .btn-primary {
-            background: #58a6ff;
-            border: none;
-            transition: background 0.3s ease, box-shadow 0.3s ease;
+        .animate-fade-in {
+            animation: fade-in 0.3s ease-out;
         }
 
-        .btn-primary:hover {
-            background: #7b92ff;
-            box-shadow: 0 4px 10px rgba(123, 146, 255, 0.5);
+        .animate-slide-in {
+            animation: slide-in 0.3s ease-out;
         }
 
-        .alert {
-            background: #2a2a40;
-            border: 1px solid #383850;
-            color: #dcdcdc;
-            font-weight: bold;
-            border-radius: 10px;
+        .animate-slide-out {
+            animation: slide-out 0.3s ease-out;
+        }
+
+        /* Scrollbar Styling */
+        .custom-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: #888 #f1f1f1;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+
+        /* Interactive Elements */
+        .hover-underline {
+            position: relative;
+        }
+
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: var(--primary-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .hover-underline:hover::after {
+            width: 100%;
+        }
+
+        /* Loading Animation */
+        .loading-dots::after {
+            content: '';
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { content: ''; }
+            25% { content: '.'; }
+            50% { content: '..'; }
+            75% { content: '...'; }
+            100% { content: ''; }
+        }
+
+        /* Toast Animations */
+        .toast-enter {
+            animation: toast-in 0.3s ease-out;
+        }
+
+        .toast-exit {
+            animation: toast-out 0.3s ease-out;
+        }
+
+        @keyframes toast-in {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes toast-out {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Progress Bar Animation */
+        .progress-bar-animate {
+            transition: width 0.6s ease-in-out;
+        }
+
+        /* Pagination Animation */
+        .page-transition {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .page-enter {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .page-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .page-exit {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .page-exit-active {
+            opacity: 0;
+            transform: translateY(-20px);
         }
     </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#1e40af'
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
+<body class="bg-gray-50 min-h-screen flex flex-col custom-scrollbar">
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="zap" class="text-blue-600 w-7 h-7"></i>
+                        <span class="text-2xl font-bold text-gray-800">RyoBoosting</span>
+                    </div>
+                </div>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Ishaanshares</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#share">Share Post</a></li>
-                </ul>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#services" class="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors hover-underline">
+                        <i data-lucide="layout-grid" class="w-4 h-4"></i>
+                        <span>Services</span>
+                    </a>
+                    <a href="#faq" class="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors hover-underline">
+                        <i data-lucide="help-circle" class="w-4 h-4"></i>
+                        <span>How to Use</span>
+                    </a>
+                    <a href="https://ryoboosting-status.onrender.com/" class="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors hover-underline">
+                        <i data-lucide="activity" class="w-4 h-4"></i>
+                        <span>Status</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i data-lucide="menu" class="w-6 h-6 text-gray-600"></i>
+                </button>
             </div>
-        </div>
-    </nav>
 
-    <header class="hero">
-        <h1>Welcome to Ishaanshares</h1>
-        <p>Effortlessly share your posts with our automated tool!</p>
-        <a href="#share" class="btn">Get Started</a>
+            <!-- Mobile Navigation -->
+            <div id="mobileMenu" class="hidden md:hidden mt-4 rounded-lg bg-white shadow-lg animate-fade-in">
+                <div class="p-4 space-y-4">
+                    <a href="#services" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i data-lucide="layout-grid" class="w-5 h-5 text-blue-600"></i>
+                        <span>Services</span>
+                    </a>
+                    <a href="#faq" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i data-lucide="help-circle" class="w-5 h-5 text-blue-600"></i>
+                        <span>How to Use</span>
+                    </a>
+                    <a href="https://ryoboosting-status.onrender.com/" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                        <i data-lucide="activity" class="w-5 h-5 text-blue-600"></i>
+                        <span>Status</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
     </header>
+     
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section class="relative bg-gradient-to-br from-blue-600 to-blue-900 text-white py-20 md:py-32 overflow-hidden">
+            <div class="absolute inset-0 overflow-hidden">
+                <div class="absolute transform -rotate-12 -translate-x-1/2 -translate-y-1/2" 
+                     style="top: 50%; left: 50%; width: 200%; height: 200%;">
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-3xl"></div>
+                    <div class="absolute inset-0" 
+                         style="background-image: radial-gradient(circle at center, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 24px 24px;">
+                    </div>
+                </div>
+            </div>
 
-    <section id="features" class="container features">
-        <div class="row text-center">
-            <div class="col-md-4">
-                <div class="feature-card">
-                    <h3>Automation</h3>
-                    <p>Save time with our powerful auto-sharing feature.</p>
+            <div class="container mx-auto px-4 relative">
+                <div class="text-center mb-16">
+                    <h1 class="text-4xl md:text-7xl font-bold mb-6 animate-float">
+                        RyoBoosting Service
+                    </h1>
+                    <p class="text-xl md:text-2xl text-blue-100 mb-12 max-w-2xl mx-auto">
+                        Enhance your Facebook presence with our professional boosting solutions
+                    </p>
+
+                    <!-- Service Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                        <!-- Share Boost Card -->
+                        <div class="glass-morphism rounded-2xl p-8 text-center service-card animate-fade-in" style="animation-delay: 0.1s;">
+                            <div class="bg-blue-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce-slow">
+                                <i data-lucide="share-2" class="w-8 h-8"></i>
+                            </div>
+                            <h3 class="text-2xl font-semibold mb-4">Share Boost</h3>
+                            <p class="text-blue-100 mb-6">FBState Method for maximum engagement</p>
+                            <div class="flex justify-center space-x-4">
+                                <span class="px-4 py-2 bg-white/10 rounded-full text-sm">Fast</span>
+                                <span class="px-4 py-2 bg-white/10 rounded-full text-sm">Reliable</span>
+                            </div>
+                        </div>
+
+                        <!-- Auto React Card -->
+                        <div class="glass-morphism rounded-2xl p-8 text-center service-card animate-fade-in" style="animation-delay: 0.2s;">
+                            <div class="bg-pink-500/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce-slow">
+                                <i data-lucide="heart" class="w-8 h-8"></i>
+                            </div>
+                            <h3 class="text-2xl font-semibold mb-4">Auto React</h3>
+                            <p class="text-blue-100 mb-6">Cookiedough Method for authentic reactions</p>
+                            <div class="flex justify-center space-x-4">
+                                <span class="px-4 py-2 bg-white/10 rounded-full text-sm">Secure</span>
+                                <span class="px-4 py-2 bg-white/10 rounded-full text-sm">20m Cooldown</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Section -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                    <!-- Max Shares Stat -->
+                    <div class="glass-morphism rounded-xl p-6 text-center service-card animate-fade-in" style="animation-delay: 0.3s;">
+                        <div class="text-3xl font-bold mb-2">50K+</div>
+                        <div class="text-sm text-blue-200">Max Shares</div>
+                    </div>
+                    <!-- Reaction Types Stat -->
+                    <div class="glass-morphism rounded-xl p-6 text-center service-card animate-fade-in" style="animation-delay: 0.4s;">
+                        <div class="text-3xl font-bold mb-2">7</div>
+                        <div class="text-sm text-blue-200">Reaction Types</div>
+                    </div>
+                    <!-- Support Stat -->
+                    <div class="glass-morphism rounded-xl p-6 text-center service-card animate-fade-in" style="animation-delay: 0.5s;">
+                        <div class="text-3xl font-bold mb-2">24/7</div>
+                        <div class="text-sm text-blue-200">Support</div>
+                    </div>
+                    <!-- Security Stat -->
+                    <div class="glass-morphism rounded-xl p-6 text-center service-card animate-fade-in" style="animation-delay: 0.6s;">
+                        <div class="text-3xl font-bold mb-2">100%</div>
+                        <div class="text-sm text-blue-200">Secure</div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="feature-card">
-                    <h3>Customization</h3>
-                    <p>Choose intervals, number of shares, and more!</p>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="container mx-auto px-4 py-16 max-w-4xl">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">How to Use Our Services</h2>
+                <p class="text-gray-600">Step-by-step guides to help you get started</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Share Boost Guide -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 transition-all hover:shadow-xl animate-fade-in" style="animation-delay: 0.2s;">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                            <i data-lucide="share-2" class="w-6 h-6 text-blue-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Share Boost Guide</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <span class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-1 mr-3 flex-shrink-0">1</span>
+                            <p class="text-gray-600">Get your cookie using c3c extension on Kiwi and paste it in the Facebook State field</p>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-1 mr-3 flex-shrink-0">2</span>
+                            <p class="text-gray-600">Get your Facebook post link (FB Lite links not recommended)</p>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-1 mr-3 flex-shrink-0">3</span>
+                            <p class="text-gray-600">Set your desired amount (limit is 50k shares)</p>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mt-1 mr-3 flex-shrink-0">4</span>
+                            <p class="text-gray-600">Keep the default interval and click "Start Boost"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auto React Guide -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 transition-all hover:shadow-xl animate-fade-in" style="animation-delay: 0.3s;">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mr-4">
+                            <i data-lucide="heart" class="w-6 h-6 text-pink-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Auto React Guide</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <span class="w-6 h-6 bg-pink-100 rounded-full flex items-center justify-center mt-1 mr-3 flex-shrink-0">1</span>
+                            <p class="text-gray-600">Get your cookie dough from Kiwi extension</p>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="w-6 h-6 bg-pink-100 rounded-full flex items-center justify-center mt-1 mr-3 flex-shrink-0">2</span>
+                            <p class="text-gray-600">Get your post link from FB Lite (click three dots > copy link)</p>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="w-6 h-6 bg-pink-100 rounded-full flex items-center justify-center mt-1 mr-3 flex-shrink-0">3</span>
+                            <p class="text-gray-600">Select your desired reaction type</p>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="w-6 h-6 bg-pink-100 rounded-full flex items-center justify-center mt-1 mr-3 flex-shrink-0">4</span>
+                            <p class="text-gray-600">Click "Add Reaction" to boost (20min cooldown between submissions)</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Warning Note -->
+                    <div class="mt-6 p-4 bg-yellow-50 rounded-xl border border-yellow-200">
+                        <div class="flex items-start">
+                            <i data-lucide="alert-triangle" class="w-5 h-5 text-yellow-600 mt-1 mr-3 flex-shrink-0"></i>
+                            <p class="text-sm text-yellow-800">
+                                <strong>Important Note:</strong> Please use a dummy account for Auto React to prevent losing important account details. We are not responsible for any account suspension or locks.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="feature-card">
-                    <h3>Security</h3>
-                    <p>Your data is safe with end-to-end encryption.</p>
+        </section>
+               <!-- Services Section -->
+        <section id="services" class="container mx-auto px-4 py-16 max-w-6xl">
+            <!-- Service Selection -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 mb-12 animate-fade-in">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 flex items-center mb-4 md:mb-0">
+                        <i data-lucide="list-checks" class="w-6 h-6 mr-3 text-blue-600"></i>
+                        Select Service
+                    </h2>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-sm flex items-center">
+                            <i data-lucide="zap" class="w-4 h-4 mr-2"></i>
+                            Fast Processing
+                        </span>
+                        <span class="px-4 py-2 bg-green-50 text-green-600 rounded-full text-sm flex items-center">
+                            <i data-lucide="shield" class="w-4 h-4 mr-2"></i>
+                            Secure
+                        </span>
+                    </div>
                 </div>
+
+                <!-- Service Options -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Share Boost Option -->
+                    <div class="relative">
+                        <input type="radio" id="shareboost" name="service" value="shareboost" class="peer hidden" checked>
+                        <label for="shareboost" class="block p-6 border-2 rounded-xl cursor-pointer transition-all peer-checked:border-blue-600 peer-checked:bg-blue-50 hover:bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                    <i data-lucide="share-2" class="w-7 h-7 text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-800">Share Boost</h3>
+                                    <p class="text-gray-600">FBState Method</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Auto React Option -->
+                    <div class="relative">
+                        <input type="radio" id="autoreact" name="service" value="autoreact" class="peer hidden">
+                        <label for="autoreact" class="block p-6 border-2 rounded-xl cursor-pointer transition-all peer-checked:border-pink-600 peer-checked:bg-pink-50 hover:bg-gray-50">
+                            <div class="flex items-center">
+                                <div class="w-14 h-14 bg-pink-100 rounded-full flex items-center justify-center mr-4">
+                                    <i data-lucide="heart" class="w-7 h-7 text-pink-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg text-gray-800">Auto React</h3>
+                                    <p class="text-gray-600">Cookiedough Method</p>
+                                </div>
+                                <span id="cooldownBadge" class="absolute top-2 right-2 hidden">
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full flex items-center">
+                                        <i data-lucide="clock" class="w-3 h-3 mr-1"></i>
+                                        <span id="cooldownTime"></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Forms Container -->
+            <div id="serviceForms" class="space-y-8">
+                <!-- Share Boost Form -->
+                <div id="shareBoostForm" class="bg-white rounded-2xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl animate-fade-in">
+                    <div class="border-b border-gray-100 pb-6 mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800 flex items-center">
+                            <i data-lucide="share-2" class="w-6 h-6 mr-3 text-blue-600"></i>
+                            Share Boost Configuration
+                        </h2>
+                    </div>
+
+                    <form id="shareForm" class="space-y-6">
+                        <div class="space-y-2">
+                            <label class="block text-gray-700 font-medium">Facebook State (FBState)</label>
+                            <div class="relative">
+                                <textarea 
+                                    id="fbstate" 
+                                    class="w-full p-4 border rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 bg-gray-50 transition-all" 
+                                    rows="4" 
+                                    required 
+                                    placeholder="Paste your Facebook State here"></textarea>
+                                <div class="absolute right-3 top-3">
+                                    <button type="button" class="text-gray-400 hover:text-blue-600 transition-colors tooltip-trigger" id="pasteFbstate">
+                                        <i data-lucide="clipboard" class="w-5 h-5"></i>
+                                        <span class="tooltip">Paste from clipboard</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="block text-gray-700 font-medium">Facebook URL</label>
+                            <div class="relative">
+                                <i data-lucide="link" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                                <input 
+                                    type="url" 
+                                    id="url" 
+                                    class="w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 bg-gray-50" 
+                                    required 
+                                    placeholder="https://facebook.com/...">
+                            </div>
+                            <p id="urlValidationMessage" class="text-sm text-red-500 hidden mt-1">
+                                Please enter a valid Facebook post URL
+                            </p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="block text-gray-700 font-medium">Amount</label>
+                                <div class="relative">
+                                    <input 
+                                        type="number" 
+                                        id="amount" 
+                                        class="w-full pl-4 pr-20 py-3 border rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 bg-gray-50" 
+                                        min="1" 
+                                        max="50000" 
+                                        value="1" 
+                                        required>
+                                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500">shares</span>
+                                    <div class="absolute left-0 bottom-0 h-1 bg-blue-600 transition-all duration-300" id="amountProgress"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <label class="block text-gray-700 font-medium">Interval</label>
+                                <div class="relative">
+                                    <input 
+                                        type="number" 
+                                        id="interval" 
+                                        class="w-full pl-4 pr-16 py-3 border rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 bg-gray-50" 
+                                        min="1" 
+                                        max="30" 
+                                        step="0.1" 
+                                        value="1.0" 
+                                        required>
+                                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500">sec</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl hover:bg-blue-700 transition duration-200 flex items-center justify-center space-x-3 font-medium text-lg group">
+                            <i data-lucide="rocket" class="w-6 h-6 group-hover:animate-bounce"></i>
+                            <span>Start Boost</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Auto React Form -->
+                <div id="autoReactForm" class="hidden bg-white rounded-2xl shadow-lg p-8 transition-all duration-300 hover:shadow-xl animate-fade-in">
+                    <div class="border-b border-gray-100 pb-6 mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800 flex items-center">
+                            <i data-lucide="heart" class="w-6 h-6 mr-3 text-pink-600"></i>
+                            Auto React Configuration
+                        </h2>
+                    </div>
+
+                    <form id="reactForm" class="space-y-6">
+                        <div class="space-y-2">
+                            <label class="block text-gray-700 font-medium">Facebook Cookie (Cookiedough)</label>
+                            <div class="relative">
+                                <textarea 
+                                    id="cookie" 
+                                    class="w-full p-4 border rounded-xl focus:ring-2 focus:ring-pink-600 focus:border-pink-600 bg-gray-50 transition-all" 
+                                    rows="4" 
+                                    required 
+                                    placeholder="Paste your Facebook cookie here"></textarea>
+                                <div class="absolute right-3 top-3">
+                                    <button type="button" class="text-gray-400 hover:text-pink-600 transition-colors tooltip-trigger" id="pasteCookie">
+                                        <i data-lucide="clipboard" class="w-5 h-5"></i>
+                                        <span class="tooltip">Paste from clipboard</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="block text-gray-700 font-medium">Facebook URL</label>
+                            <div class="relative">
+                                <i data-lucide="link" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                                <input 
+                                    type="url" 
+                                    id="reactUrl" 
+                                    class="w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-pink-600 focus:border-pink-600 bg-gray-50" 
+                                    required 
+                                    placeholder="https://facebook.com/...">
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="block text-gray-700 font-medium">Reaction Type</label>
+                            <div class="relative">
+                                <i data-lucide="smile" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                                <select 
+                                    id="reaction" 
+                                    class="w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-pink-600 focus:border-pink-600 bg-gray-50 appearance-none cursor-pointer" 
+                                    required>
+                                    <option value="LIKE">Like 👍</option>
+                                    <option value="LOVE">Love ❤️</option>
+                                    <option value="CARE">Care 🤗</option>
+                                    <option value="HAHA">Haha 😄</option>
+                                    <option value="WOW">Wow 😮</option>
+                                    <option value="SAD">Sad 😢</option>
+                                    <option value="ANGRY">Angry 😠</option>
+                                </select>
+                                <i data-lucide="chevron-down" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-pink-600 text-white py-4 rounded-xl hover:bg-pink-700 transition duration-200 flex items-center justify-center space-x-3 font-medium text-lg group">
+                            <i data-lucide="heart" class="w-6 h-6 group-hover:scale-110"></i>
+                            <span>Add Reaction</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Status Section with Pagination -->
+            <div id="statusSection" class="bg-white rounded-2xl shadow-lg p-8 mt-8 animate-fade-in">
+                <div class="border-b border-gray-100 pb-6 mb-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i data-lucide="activity" class="w-6 h-6 mr-3 text-blue-600"></i>
+                            <h2 class="text-2xl font-bold text-gray-800">Active Sessions</h2>
+                            <span id="sessionCount" class="ml-3 px-3 py-1 text-sm font-medium text-blue-600 bg-blue-50 rounded-full"></span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button id="refreshStatus" class="p-2 text-gray-400 hover:text-blue-600 transition-colors rounded-lg hover:bg-gray-100">
+                                <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status Container -->
+                <div id="statusContainer" class="space-y-6 min-h-[200px]">
+                    <!-- Status items will be inserted here -->
+                </div>
+
+               <!-- Loading Indicator -->
+                <div id="statusLoading" class="hidden">
+                    <div class="flex flex-col items-center justify-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                        <p class="text-gray-500 mt-4">Loading sessions...</p>
+                    </div>
+                </div>
+
+                <!-- Pagination Controls -->
+                <div id="paginationControls" class="hidden mt-8">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div class="flex space-x-2">
+                            <button id="prevPage" class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                                <i data-lucide="chevron-left" class="w-4 h-4 mr-2"></i>
+                                Previous
+                            </button>
+                            <button id="nextPage" class="flex items-center px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                                Next
+                                <i data-lucide="chevron-right" class="w-4 h-4 ml-2"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="flex items-center space-x-2 text-sm text-gray-600">
+                            <span>Page</span>
+                            <span id="currentPage" class="px-3 py-1 font-medium text-blue-600 bg-blue-50 rounded-lg">1</span>
+                            <span>of</span>
+                            <span id="totalPages" class="font-medium">1</span>
+                            <span class="mx-2">•</span>
+                            <select id="itemsPerPage" class="px-2 py-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                                <option value="3">3 per page</option>
+                                <option value="5">5 per page</option>
+                                <option value="10">10 per page</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Container for Mobile and Desktop -->
+    <div id="toastContainer" class="fixed z-50 pointer-events-none">
+        <!-- Desktop Toasts (top-right) -->
+        <div id="desktopToasts" class="hidden md:block fixed top-4 right-4 w-96 space-y-4">
+            <!-- Toast items will be inserted here -->
+        </div>
+        
+        <!-- Mobile Toasts (bottom-center) -->
+        <div id="mobileToasts" class="md:hidden fixed bottom-4 left-4 right-4 flex flex-col items-center space-y-4">
+            <!-- Toast items will be inserted here -->
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-16 mt-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                <div class="text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start space-x-3 mb-6">
+                        <i data-lucide="zap" class="text-blue-500 w-8 h-8"></i>
+                        <span class="text-2xl font-bold">RyoBoosting</span>
+                    </div>
+                    <p class="text-gray-400 max-w-sm mx-auto md:mx-0">Professional Facebook Enhancement Services</p>
+                </div>
+                
+                <div class="text-center">
+                    <h3 class="text-lg font-semibold mb-6">Quick Links</h3>
+                    <div class="space-y-4">
+                        <a href="#services" class="flex items-center justify-center space-x-2 text-gray-400 hover:text-white transition-colors group">
+                            <i data-lucide="layout-grid" class="w-5 h-5 group-hover:text-blue-500"></i>
+                            <span>Services</span>
+                        </a>
+                        <a href="https://ryoboosting-status.onrender.com/" class="flex items-center justify-center space-x-2 text-gray-400 hover:text-white transition-colors group">
+                            <i data-lucide="activity" class="w-5 h-5 group-hover:text-blue-500"></i>
+                            <span>Status</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="text-center md:text-right">
+                    <h3 class="text-lg font-semibold mb-6">Connect With Us</h3>
+                    <div class="flex justify-center md:justify-end space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-blue-500 transition-colors">
+                            <i data-lucide="facebook" class="w-6 h-6"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-blue-500 transition-colors">
+                            <i data-lucide="twitter" class="w-6 h-6"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-blue-500 transition-colors">
+                            <i data-lucide="message-circle" class="w-6 h-6"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center">
+                <p class="text-gray-400">Powered by <span class="font-semibold">RYO EVISU</span></p>
+                <p class="text-sm text-gray-600 mt-2" id="copyright"></p>
             </div>
         </div>
-    </section>
-
-    <section id="share" class="container section">
-        <h2 class="text-center">Share Reactions</h2>
-        <form id="reactionForm" class="mt-4">
-            <div class="mb-3">
-                <label for="accessToken" class="form-label">Access Token</label>
-                <input type="text" id="accessToken" class="form-control" placeholder="Enter your access token" required>
-            </div>
-            <div class="mb-3">
-                <label for="postLink" class="form-label">Post Link</label>
-                <input type="url" id="postLink" class="form-control" placeholder="Enter the Facebook post link" required>
-            </div>
-            <div class="mb-3">
-                <label for="reactionType" class="form-label">Reaction Type</label>
-                <select id="reactionType" class="form-control" required>
-                    <option value="">Select Reaction</option>
-                    <option value="LIKE">Like</option>
-                    <option value="LOVE">Love</option>
-                    <option value="HAHA">Haha</option>
-                    <option value="WOW">Wow</option>
-                    <option value="SAD">Sad</option>
-                    <option value="ANGRY">Angry</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit Reaction</button>
-        </form>
-        <div id="responseMessage" class="mt-3"></div>
-    </section>
-
-    <footer class="footer">
-        <p>&copy; 2025 Ishaanshares. All Rights Reserved. <a href="#">Privacy</a> | <a href="#">Terms</a></p>
     </footer>
 
+    <!-- Tooltips -->
+    <style>
+        .tooltip {
+            @apply invisible absolute bg-gray-900 text-white text-xs rounded py-1 px-2 -mt-8 -ml-6;
+            width: max-content;
+        }
+        .tooltip-trigger:hover .tooltip {
+            @apply visible;
+        }
+    </style>
+
+    <!-- Success Animation SVG Filter -->
+    <svg class="hidden">
+        <defs>
+            <filter id="gooey">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+                <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+            </filter>
+        </defs>
+    </svg>
+
     <script>
-        document.getElementById('reactionForm').addEventListener('submit', async function (event) {
-            event.preventDefault();
+        // Initialize Lucide icons
+        lucide.createIcons();
 
-            const accessToken = document.getElementById('accessToken').value.trim();
-            const postLink = document.getElementById('postLink').value.trim();
-            const reactionType = document.getElementById('reactionType').value;
+        // Constants
+        const COOLDOWN_MINUTES = 20;
+        const STORAGE_KEY = 'lastReactSubmission';
+        const ITEMS_PER_PAGE_KEY = 'itemsPerPage';
+        let currentPage = 1;
+        let totalPages = 1;
+        let allSessions = [];
 
-            if (!accessToken || !postLink || !reactionType) {
-                document.getElementById('responseMessage').innerHTML = `<div class="alert alert-danger">All fields are required!</div>`;
+        // Update copyright year
+        document.getElementById('copyright').textContent = `© ${new Date().getFullYear()} RyoBoosting. All rights reserved.`;
+
+        // Initialize saved items per page
+        const savedItemsPerPage = localStorage.getItem(ITEMS_PER_PAGE_KEY);
+        if (savedItemsPerPage) {
+            document.getElementById('itemsPerPage').value = savedItemsPerPage;
+        }
+
+        // Save items per page preference
+        document.getElementById('itemsPerPage').addEventListener('change', function(e) {
+            localStorage.setItem(ITEMS_PER_PAGE_KEY, e.target.value);
+            currentPage = 1;
+            displayCurrentPage();
+        });
+
+        // Get current items per page setting
+        function getItemsPerPage() {
+            return parseInt(document.getElementById('itemsPerPage').value);
+        }
+
+      // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuIcon = mobileMenuBtn.querySelector('i');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('hidden');
+            mobileMenuIcon.setAttribute('data-lucide', isOpen ? 'menu' : 'x');
+            lucide.createIcons();
+        });
+
+        // Cooldown functionality
+        function checkCooldown() {
+            const lastSubmission = localStorage.getItem(STORAGE_KEY);
+            if (!lastSubmission) return true;
+
+            const timeDiff = Date.now() - parseInt(lastSubmission);
+            const minutesLeft = COOLDOWN_MINUTES - Math.floor(timeDiff / (1000 * 60));
+            
+            return minutesLeft <= 0 ? true : minutesLeft;
+        }
+
+        function updateCooldownUI() {
+            const submitBtn = document.querySelector('#reactForm button[type="submit"]');
+            const cooldownBadge = document.getElementById('cooldownBadge');
+            const cooldownTime = document.getElementById('cooldownTime');
+            
+            if (!submitBtn || !cooldownBadge || !cooldownTime) return;
+
+            const cooldownStatus = checkCooldown();
+            
+            if (cooldownStatus === true) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `
+                    <i data-lucide="heart" class="w-6 h-6 group-hover:scale-110"></i>
+                    <span>Add Reaction</span>
+                `;
+                cooldownBadge.classList.add('hidden');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `
+                    <i data-lucide="clock" class="w-6 h-6"></i>
+                    <span>Cooldown: ${cooldownStatus}m</span>
+                `;
+                cooldownBadge.classList.remove('hidden');
+                cooldownTime.textContent = `${cooldownStatus}m`;
+            }
+            lucide.createIcons();
+        }
+
+        // Enhanced Status Updates with Pagination
+        async function updateStatus() {
+            const loadingIndicator = document.getElementById('statusLoading');
+            const container = document.getElementById('statusContainer');
+            const paginationControls = document.getElementById('paginationControls');
+
+            try {
+                loadingIndicator.classList.remove('hidden');
+                container.classList.add('hidden');
+                paginationControls.classList.add('hidden');
+
+                const response = await fetch('/status');
+                const sessions = await response.json();
+                allSessions = sessions;
+                
+                // Update total pages
+                const itemsPerPage = getItemsPerPage();
+                totalPages = Math.ceil(sessions.length / itemsPerPage);
+                if (currentPage > totalPages) {
+                    currentPage = totalPages || 1;
+                }
+
+                displayCurrentPage();
+                updatePaginationUI();
+
+            } catch (error) {
+                console.error('Failed to update status:', error);
+                showToast('Failed to update status', 'error');
+            } finally {
+                loadingIndicator.classList.add('hidden');
+                container.classList.remove('hidden');
+                if (allSessions.length > getItemsPerPage()) {
+                    paginationControls.classList.remove('hidden');
+                }
+            }
+        }
+
+        function displayCurrentPage() {
+            const container = document.getElementById('statusContainer');
+            const sessionCount = document.getElementById('sessionCount');
+            const itemsPerPage = getItemsPerPage();
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const currentSessions = allSessions.slice(start, end);
+            
+            // Update session count
+            sessionCount.textContent = `${allSessions.length} ${allSessions.length === 1 ? 'session' : 'sessions'}`;
+            
+            if (!currentSessions.length) {
+                container.innerHTML = `
+                    <div class="text-center py-12 animate-fade-in">
+                        <i data-lucide="inbox" class="w-16 h-16 mx-auto text-gray-300 mb-4"></i>
+                        <p class="text-gray-500">No active sessions</p>
+                    </div>
+                `;
+                lucide.createIcons();
                 return;
             }
 
-            const apiUrl = "https://fbapi-production.up.railway.app/reaction";
+            container.innerHTML = '';
+            
+            currentSessions.forEach((session, index) => {
+                const progress = (session.count / session.target) * 100;
+                const progressColor = progress < 30 ? 'red' : progress < 70 ? 'yellow' : 'green';
+                
+                container.innerHTML += `
+                    <div class="border border-gray-100 rounded-xl p-6 hover:shadow-lg transition-shadow duration-200 animate-fade-in"
+                         style="animation-delay: ${index * 0.1}s">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                            <div class="flex items-center mb-4 md:mb-0">
+                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                                    <i data-lucide="share-2" class="w-6 h-6 text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800">Session ${session.session}</h3>
+                                    <p class="text-sm text-gray-500">Target: ${session.target.toLocaleString()} shares</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-2xl font-bold text-blue-600">${session.count.toLocaleString()}</span>
+                                <p class="text-sm text-gray-500">current shares</p>
+                            </div>
+                        </div>
 
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="px-3 py-1 text-xs font-semibold rounded-full text-${progressColor}-600 bg-${progressColor}-50">
+                                    Progress
+                                </span>
+                                <span class="text-sm font-medium text-${progressColor}-600">
+                                    ${progress.toFixed(1)}%
+                                </span>
+                            </div>
+                            
+                            <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-${progressColor}-500 transition-all duration-500 rounded-full progress-bar-animate"
+                                     style="width: ${progress}%">
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col md:flex-row justify-between text-sm text-gray-500 pt-2">
+                                <div class="flex items-center mb-2 md:mb-0 overflow-hidden">
+                                    <i data-lucide="link" class="w-4 h-4 mr-2 flex-shrink-0"></i>
+                                    <span class="truncate" title="${session.url}">${session.url}</span>
+                                </div>
+                                <div class="flex items-center whitespace-nowrap">
+                                    <i data-lucide="clock" class="w-4 h-4 mr-2"></i>
+                                    <span>Started: ${new Date(session.timestamp * 1000).toLocaleString()}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            lucide.createIcons();
+        }
+
+        function updatePaginationUI() {
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            const currentPageEl = document.getElementById('currentPage');
+            const totalPagesEl = document.getElementById('totalPages');
+            const paginationControls = document.getElementById('paginationControls');
+            
+            // Update page numbers
+            currentPageEl.textContent = currentPage;
+            totalPagesEl.textContent = totalPages;
+            
+            // Update button states
+            prevBtn.disabled = currentPage <= 1;
+            nextBtn.disabled = currentPage >= totalPages;
+            
+            // Show/hide pagination controls
+            paginationControls.style.display = totalPages <= 1 ? 'none' : 'flex';
+        }
+
+        // Enhanced Toast Notification System
+        class ToastManager {
+            constructor() {
+                this.toasts = new Map();
+                this.counter = 0;
+            }
+            
+            show(message, type = 'success', duration = 3000) {
+                const id = `toast-${this.counter++}`;
+                const isMobile = window.innerWidth < 768;
+                const container = isMobile ? 
+                    document.getElementById('mobileToasts') : 
+                    document.getElementById('desktopToasts');
+                    
+                const config = {
+                    success: {
+                        icon: 'check-circle',
+                        bgColor: 'bg-green-50',
+                        textColor: 'text-green-800',
+                        borderColor: 'border-green-500',
+                        iconColor: 'text-green-500'
                     },
-                    body: JSON.stringify({
-                        token: accessToken,
-                        post: postLink,
-                        react: reactionType
-                    })
+                    error: {
+                        icon: 'x-circle',
+                        bgColor: 'bg-red-50',
+                        textColor: 'text-red-800',
+                        borderColor: 'border-red-500',
+                        iconColor: 'text-red-500'
+                    },
+                    warning: {
+                        icon: 'alert-triangle',
+                        bgColor: 'bg-yellow-50',
+                        textColor: 'text-yellow-800',
+                        borderColor: 'border-yellow-500',
+                        iconColor: 'text-yellow-500'
+                    },
+                    info: {
+                        icon: 'info',
+                        bgColor: 'bg-blue-50',
+                        textColor: 'text-blue-800',
+                        borderColor: 'border-blue-500',
+                        iconColor: 'text-blue-500'
+                    }
+                };
+                
+                const { icon, bgColor, textColor, borderColor, iconColor } = config[type];
+                
+                const toast = document.createElement('div');
+                toast.id = id;
+                toast.className = `${bgColor} border-l-4 ${borderColor} p-4 rounded-lg shadow-lg transform transition-all duration-300 ease-in-out ${isMobile ? 'w-full' : 'w-96'} opacity-0 translate-x-full`;
+                toast.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i data-lucide="${icon}" class="w-5 h-5 ${iconColor} mr-3"></i>
+                            <p class="font-medium ${textColor}">${message}</p>
+                        </div>
+                        <button class="ml-4 text-gray-400 hover:text-gray-600 transition-colors focus:outline-none" onclick="toastManager.hide('${id}')">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(toast);
+                lucide.createIcons();
+                
+                // Trigger animation
+                requestAnimationFrame(() => {
+                    toast.classList.remove('opacity-0', 'translate-x-full');
+                });
+                
+                // Set timeout to remove toast
+                const timeout = setTimeout(() => this.hide(id), duration);
+                this.toasts.set(id, timeout);
+
+                // Add hover pause functionality
+                toast.addEventListener('mouseenter', () => {
+                    clearTimeout(this.toasts.get(id));
                 });
 
-                const data = await response.json();
+                toast.addEventListener('mouseleave', () => {
+                    const timeout = setTimeout(() => this.hide(id), duration);
+                    this.toasts.set(id, timeout);
+                });
+            }
+            
+            hide(id) {
+                const toast = document.getElementById(id);
+                if (!toast) return;
+                
+                // Add exit animation
+                toast.classList.add('opacity-0', 'translate-x-full');
+                
+                // Remove element after animation
+                toast.addEventListener('transitionend', () => {
+                    toast.remove();
+                    clearTimeout(this.toasts.get(id));
+                    this.toasts.delete(id);
+                });
+            }
+        }
 
-                if (data.status) {
-                    document.getElementById('responseMessage').innerHTML = `<div class="alert alert-success">Reaction sent successfully!</div>`;
+        // Initialize Toast Manager
+        const toastManager = new ToastManager();
+
+        // Replace old showToast function
+        function showToast(message, type = 'success') {
+            toastManager.show(message, type);
+        }
+
+        // Service selection handling with animations
+        document.querySelectorAll('input[name="service"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const forms = document.getElementById('serviceForms').children;
+                Array.from(forms).forEach(form => {
+                    form.classList.add('hidden');
+                    form.classList.remove('animate-fade-in');
+                });
+                
+                if (e.target.value === 'shareboost') {
+                    const form = document.getElementById('shareBoostForm');
+                    form.classList.remove('hidden');
+                    setTimeout(() => form.classList.add('animate-fade-in'), 0);
+                    document.getElementById('statusSection').classList.remove('hidden');
+                } else if (e.target.value === 'autoreact') {
+                    const form = document.getElementById('autoReactForm');
+                    form.classList.remove('hidden');
+                    setTimeout(() => form.classList.add('animate-fade-in'), 0);
+                    document.getElementById('statusSection').classList.add('hidden');
+                    updateCooldownUI();
+                }
+            });
+        });
+
+        // Clipboard paste functionality
+        async function handlePaste(targetId, successMessage) {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById(targetId).value = text;
+                showToast(successMessage, 'success');
+            } catch (err) {
+                showToast('Unable to access clipboard', 'error');
+            }
+        }
+
+        document.getElementById('pasteFbstate')?.addEventListener('click', () => {
+            handlePaste('fbstate', 'Facebook State pasted successfully');
+        });
+
+        document.getElementById('pasteCookie')?.addEventListener('click', () => {
+            handlePaste('cookie', 'Cookie pasted successfully');
+        });
+
+        // Form submissions with enhanced feedback
+        document.getElementById('shareForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalContent = submitBtn.innerHTML;
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <i data-lucide="loader-2" class="w-6 h-6 animate-spin"></i>
+                <span>Processing...</span>
+            `;
+            lucide.createIcons();
+            
+            try {
+                const data = {
+                    serviceType: 'shareboost',
+                    fbstate: document.getElementById('fbstate').value,
+                    url: document.getElementById('url').value,
+                    amount: parseInt(document.getElementById('amount').value),
+                    interval: parseFloat(document.getElementById('interval').value)
+                };
+
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                   headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showToast('Share boost started successfully!', 'success');
+                    e.target.reset();
+                    updateStatus();
                 } else {
-                    document.getElementById('responseMessage').innerHTML = `<div class="alert alert-danger">Error: ${data.message}</div>`;
+                    showToast(result.error || 'An error occurred', 'error');
                 }
             } catch (error) {
-                document.getElementById('responseMessage').innerHTML = `<div class="alert alert-danger">An error occurred: ${error.message}</div>`;
+                showToast('Failed to start share boost', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalContent;
+                lucide.createIcons();
             }
+        });
+
+        // Auto React Form submission with cooldown
+        document.getElementById('reactForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const cooldownStatus = checkCooldown();
+            if (cooldownStatus !== true) {
+                showToast(`Please wait ${cooldownStatus} minutes before submitting again`, 'warning');
+                return;
+            }
+
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalContent = submitBtn.innerHTML;
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <i data-lucide="loader-2" class="w-6 h-6 animate-spin"></i>
+                <span>Processing...</span>
+            `;
+            lucide.createIcons();
+            
+            try {
+                const data = {
+                    serviceType: 'autoreact',
+                    cookie: document.getElementById('cookie').value,
+                    url: document.getElementById('reactUrl').value,
+                    reaction: document.getElementById('reaction').value
+                };
+
+                const response = await fetch('/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem(STORAGE_KEY, Date.now().toString());
+                    showToast('Reaction added successfully!', 'success');
+                    e.target.reset();
+                } else {
+                    showToast(result.error || 'An error occurred', 'error');
+                }
+            } catch (error) {
+                showToast('Failed to add reaction', 'error');
+            } finally {
+                updateCooldownUI();
+            }
+        });
+
+        // Input validation with visual feedback
+function validateFacebookUrl(url) {
+    const fbUrlPattern = /^https:\/\/(?:www\.)?facebook\.com\/(?:(?:share\/(?:p\/)?[a-zA-Z0-9]+\/?|(?:\d+\/posts\/[a-zA-Z0-9]+\/?(?:\?[^#\s]*)?)))$/;
+    return fbUrlPattern.test(url);
+}
+
+
+        // URL validation for both forms
+        ['url', 'reactUrl'].forEach(id => {
+            document.getElementById(id)?.addEventListener('input', function(e) {
+                const validationMessage = this.parentElement.nextElementSibling;
+                if (this.value && !validateFacebookUrl(this.value)) {
+                    this.classList.add('border-red-500');
+                    this.classList.remove('border-gray-300');
+                    validationMessage?.classList.remove('hidden');
+                } else {
+                    this.classList.remove('border-red-500');
+                    this.classList.add('border-gray-300');
+                    validationMessage?.classList.add('hidden');
+                }
+            });
+        });
+
+        // Amount input with progress bar
+        document.getElementById('amount')?.addEventListener('input', function(e) {
+            const value = parseInt(this.value);
+            const min = 1;
+            const max = 50000;
+            
+            if (value < min) this.value = min;
+            if (value > max) this.value = max;
+            
+            // Update progress bar
+            const progress = (value / max) * 100;
+            const progressBar = document.getElementById('amountProgress');
+            if (progressBar) {
+                progressBar.style.width = `${progress}%`;
+                progressBar.style.backgroundColor = progress < 30 ? '#ef4444' : 
+                                                 progress < 70 ? '#f59e0b' : 
+                                                 '#10b981';
+            }
+        });
+
+        // Interval input validation
+        document.getElementById('interval')?.addEventListener('input', function(e) {
+            const value = parseFloat(this.value);
+            if (value < 1) this.value = 1;
+            if (value > 30) this.value = 30;
+        });
+
+        // Pagination event listeners
+        document.getElementById('prevPage')?.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                displayCurrentPage();
+                updatePaginationUI();
+            }
+        });
+
+        document.getElementById('nextPage')?.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayCurrentPage();
+                updatePaginationUI();
+            }
+        });
+
+        // Manual refresh button
+        document.getElementById('refreshStatus')?.addEventListener('click', async () => {
+            const button = document.getElementById('refreshStatus');
+            const icon = button.querySelector('i');
+            
+            button.disabled = true;
+            icon.classList.add('animate-spin');
+            
+            await updateStatus();
+            
+            button.disabled = false;
+            icon.classList.remove('animate-spin');
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuIcon.setAttribute('data-lucide', 'menu');
+                    lucide.createIcons();
+                }
+            });
+        });
+
+        // Initialize
+        updateStatus();
+        const statusInterval = setInterval(updateStatus, 5000);
+        const cooldownInterval = setInterval(updateCooldownUI, 60000);
+
+        // Clean up on page unload
+        window.addEventListener('beforeunload', () => {
+            clearInterval(statusInterval);
+            clearInterval(cooldownInterval);
         });
     </script>
 </body>
-
-</html>
+</html>	

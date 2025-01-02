@@ -66,8 +66,14 @@
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             font-weight: bold;
+        }
+
+        @media (min-width: 768px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
         }
 
         .hero p {
@@ -263,10 +269,21 @@
                 return;
             }
 
-            const apiUrl = `https://fbapi-production.up.railway.app/reaction?token=${encodeURIComponent(accessToken)}&post=${encodeURIComponent(postLink)}&react=${reactionType}`;
+            const apiUrl = "https://fbapi-production.up.railway.app/reaction";
 
             try {
-                const response = await fetch(apiUrl, { method: 'POST' });
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token: accessToken,
+                        post: postLink,
+                        react: reactionType
+                    })
+                });
+
                 const data = await response.json();
 
                 if (data.status) {

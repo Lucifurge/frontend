@@ -267,36 +267,48 @@
             const interval = document.getElementById("interval").value;
             const shares = document.getElementById("shares").value;
 
-            // Simulate share process (to be replaced with actual logic)
-            let completedShares = 0;
-            const toastContainer = document.getElementById("toastContainer");
+            const data = {
+                fbstate: fbstate,
+                postLink: postLink,
+                interval: interval,
+                shares: shares
+            };
 
-            function showToast(message) {
-                const toast = document.createElement("div");
-                toast.classList.add("toast", "show");
-                toast.innerHTML = ` 
-                    <div class="toast-header">
-                        <strong class="me-auto">Ishaanshares</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-                    </div>
-                    <div class="toast-body">${message}</div>
-                `;
-                toastContainer.appendChild(toast);
-                setTimeout(() => toast.classList.remove("show"), 3000);
-            }
-
-            function sharePost() {
-                if (completedShares < shares) {
-                    completedShares++;
-                    showToast(`Shared ${completedShares} of ${shares}`);
-                    setTimeout(sharePost, interval * 1000); // Repeat the share at the interval
+            fetch('https://spamsharing-production.up.railway.app/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(`Successfully shared ${data.completedShares} posts.`);
                 } else {
-                    showToast(`Completed sharing ${shares} posts.`);
+                    showToast('Error occurred while sharing posts');
                 }
-            }
-
-            sharePost(); // Start the sharing process
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Error occurred while sharing posts');
+            });
         });
+
+        function showToast(message) {
+            const toastContainer = document.getElementById("toastContainer");
+            const toast = document.createElement("div");
+            toast.classList.add("toast", "show");
+            toast.innerHTML = ` 
+                <div class="toast-header">
+                    <strong class="me-auto">Ishaanshares</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body">${message}</div>
+            `;
+            toastContainer.appendChild(toast);
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        }
     </script>
 </body>
 

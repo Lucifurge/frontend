@@ -1,187 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facebook Share Bot</title>
+    <title>Ishaanshares</title>
+    <link rel="icon" href="logo.ico" type="image/x-icon"> <!-- Favicon link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f3f3f3;
-            margin: 0;
-            padding: 20px;
+            background-color: #1e1e2f;
+            color: #dcdcdc;
+            font-family: "Fira Code", monospace;
+            background-image: linear-gradient(120deg, #1f2937, #111827);
+            background-attachment: fixed;
+            transition: background 0.5s ease;
         }
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            margin: 0 auto;
+
+        .navbar {
+            background: linear-gradient(90deg, #2c2c54, #212642);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
         }
-        h1 {
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
+
+        .navbar-brand {
             font-weight: bold;
-            display: block;
+            color: #58a6ff !important;
+            font-size: 1.5rem;
         }
-        input, button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-sizing: border-box;
+
+        .navbar-nav .nav-link {
+            color: #dcdcdc !important;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: color 0.3s ease, transform 0.3s ease;
         }
-        button {
-            background-color: #28a745;
+
+        .navbar-nav .nav-link:hover {
+            color: #7b92ff !important;
+            transform: scale(1.1);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(180deg, rgba(30, 30, 47, 0.95), rgba(18, 18, 32, 0.95));
+            border-radius: 15px;
             color: white;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            margin-top: 1rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        @media (min-width: 768px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin: 20px 0;
+        }
+
+        .hero .btn {
+            background: #58a6ff;
+            color: white;
+            font-size: 1.2rem;
+            padding: 12px 25px;
+            border-radius: 25px;
+            box-shadow: 0 4px 10px rgba(88, 166, 255, 0.5);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hero .btn:hover {
+            background: #7b92ff;
+            box-shadow: 0 6px 15px rgba(123, 146, 255, 0.7);
+        }
+
+        .features {
+            padding: 50px 20px;
+        }
+
+        .feature-card {
+            background: #2a2a40;
+            border: 1px solid #383850;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer {
+            background: linear-gradient(90deg, #212642, #2c2c54);
+            color: #dcdcdc;
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #383850;
+        }
+
+        .footer a {
+            color: #58a6ff;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #7b92ff;
+        }
+
+        #shareForm {
+            background: #1f1f38;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        #shareForm:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-control {
+            background: #2a2a40;
+            color: #dcdcdc;
+            border: 1px solid #383850;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: #1f1f38;
+            border-color: #58a6ff;
+            color: #dcdcdc;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background: #58a6ff;
             border: none;
-            cursor: pointer;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
-        button:hover {
-            background-color: #218838;
+
+        .btn-primary:hover {
+            background: #7b92ff;
+            box-shadow: 0 4px 10px rgba(123, 146, 255, 0.5);
         }
-        .error {
-            color: red;
-            font-size: 14px;
+
+        .alert {
+            background: #2a2a40;
+            border: 1px solid #383850;
+            color: #dcdcdc;
+            font-weight: bold;
+            border-radius: 10px;
         }
-        .success {
-            color: green;
-            font-size: 14px;
+
+        .toast-container {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1050;
         }
-        .loading {
-            color: orange;
-            font-size: 14px;
+
+        .toast {
+            background: #2a2a40;
+            color: #dcdcdc;
+            border: 1px solid #383850;
+            border-radius: 8px;
+        }
+
+        .toast-header {
+            background: #383850;
+            color: #dcdcdc;
+            border-bottom: 1px solid #2a2a40;
         }
     </style>
 </head>
+
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Ishaanshares</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#share">Share Post</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <div class="container">
-        <h1>Facebook Share Bot</h1>
+    <header class="hero">
+        <h1>Welcome to Ishaanshares</h1>
+        <p>Effortlessly share your posts with our automated tool!</p>
+        <a href="#share" class="btn">Get Started</a>
+    </header>
+
+    <section id="features" class="container features">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <h3>Automation</h3>
+                    <p>Save time with our powerful auto-sharing feature.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <h3>Fast & Efficient</h3>
+                    <p>Share your posts rapidly with custom intervals and amounts.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <h3>Safe & Secure</h3>
+                    <p>Your privacy and security are our top priorities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="share" class="container">
         <form id="shareForm">
-            <div class="form-group">
-                <label for="fbstate">Facebook State (JSON)</label>
-                <textarea id="fbstate" required rows="6" placeholder='Enter fbstate as JSON'></textarea>
-                <div id="fbstateError" class="error"></div>
+            <div class="mb-3">
+                <label for="fbstate" class="form-label">Facebook State (URL)</label>
+                <input type="text" class="form-control" id="fbstate" placeholder="Enter your Facebook state URL" required>
             </div>
-            <div class="form-group">
-                <label for="postLink">Post Link</label>
-                <input type="url" id="postLink" required placeholder="Enter Facebook post link">
-                <div id="postLinkError" class="error"></div>
+            <div class="mb-3">
+                <label for="postLink" class="form-label">Post Link</label>
+                <input type="text" class="form-control" id="postLink" placeholder="Enter your Facebook post URL" required>
             </div>
-            <div class="form-group">
-                <label for="shares">Number of Shares</label>
-                <input type="number" id="shares" required min="1" max="1000000" placeholder="Enter the number of shares">
-                <div id="sharesError" class="error"></div>
+            <div class="mb-3">
+                <label for="interval" class="form-label">Interval (seconds)</label>
+                <input type="number" class="form-control" id="interval" min="0.1" max="60" required>
             </div>
-         <div class="form-group">
-    <label for="interval">Interval (in seconds)</label>
-    <input type="number" id="interval" required min="0.1" max="60" step="0.1" placeholder="Enter the interval">
-    <div id="intervalError" class="error"></div>
-</div>
-<button type="submit">Start Sharing</button>
+            <div class="mb-3">
+                <label for="shares" class="form-label">Shares</label>
+                <input type="number" class="form-control" id="shares" min="1" max="1000000" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Start Sharing</button>
+        </form>
+    </section>
 
-<script>
-    document.getElementById('shareForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+    <div id="toastContainer" class="toast-container"></div>
 
-        // Clear previous error messages
-        clearErrors();
+    <footer class="footer">
+        <p>&copy; 2025 Ishaanshares. All Rights Reserved.</p>
+    </footer>
 
-        const fbstate = document.getElementById('fbstate').value;
-        const postLink = document.getElementById('postLink').value;
-        const shares = document.getElementById('shares').value;
-        const interval = document.getElementById('interval').value;
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById("shareForm").addEventListener("submit", function (e) {
+            e.preventDefault();
 
-        // Validate the input data
-        const validationErrors = validateForm(fbstate, postLink, shares, interval);
-        if (validationErrors.length > 0) {
-            displayErrors(validationErrors);
-            return;
-        }
+            const fbstate = document.getElementById("fbstate").value;
+            const postLink = document.getElementById("postLink").value;
+            const interval = document.getElementById("interval").value;
+            const shares = document.getElementById("shares").value;
 
-        const data = {
-            fbstate: fbstate,
-            postLink: postLink,
-            shares: parseInt(shares),
-            interval: parseFloat(interval)
-        };
+            const data = {
+                fbstate: fbstate,
+                postLink: postLink,
+                interval: interval,
+                shares: shares
+            };
 
-        // Show loading message while waiting for the backend response
-        document.getElementById('responseMessage').textContent = 'Sending request to backend...';
-
-        // Send the data to the backend
-        fetch('/submit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.message) {
-                document.getElementById('responseMessage').textContent = result.message;
-                document.getElementById('responseMessage').classList.remove('loading');
-                document.getElementById('responseMessage').classList.add('success');
-            } else if (result.error) {
-                document.getElementById('responseMessage').textContent = result.error;
-                document.getElementById('responseMessage').classList.remove('loading');
-                document.getElementById('responseMessage').classList.add('error');
-            }
-        })
-        .catch(error => {
-            document.getElementById('responseMessage').textContent = 'An error occurred while processing your request.';
-            document.getElementById('responseMessage').classList.remove('loading');
-            document.getElementById('responseMessage').classList.add('error');
+            fetch('https://spamsharing-production.up.railway.app/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(`Successfully shared ${data.completedShares} posts.`);
+                } else {
+                    showToast('Error occurred while sharing posts');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Error occurred while sharing posts');
+            });
         });
-    });
 
-    function validateForm(fbstate, postLink, shares, interval) {
-        let errors = [];
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.classList.add('toast');
+            toast.innerHTML = `
+                <div class="toast-header">
+                    <strong class="me-auto">Notification</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body">${message}</div>
+            `;
 
-        try {
-            JSON.parse(fbstate);  // Check if fbstate is valid JSON
-        } catch (e) {
-            errors.push({ field: 'fbstate', message: 'Invalid JSON format for fbstate.' });
+            document.getElementById('toastContainer').appendChild(toast);
+            const toastElement = new bootstrap.Toast(toast);
+            toastElement.show();
         }
-
-        if (!/^https:\/\/www\.facebook\.com\/(posts|share\/p)\/[a-zA-Z0-9_-]+/.test(postLink)) {
-            errors.push({ field: 'postLink', message: 'Invalid Facebook post link format.' });
-        }
-
-        if (shares < 1 || shares > 1000000) {
-            errors.push({ field: 'shares', message: 'Number of shares must be between 1 and 1,000,000.' });
-        }
-
-        // Adjust interval validation to match backend rules
-        if (!(interval >= 0.1 && interval <= 0.10 || interval >= 1 && interval <= 60)) {
-            errors.push({ field: 'interval', message: 'Interval must be between 0.1 - 0.10 or 1 - 60 seconds.' });
-        }
-
-        return errors;
-    }
-
-    function displayErrors(errors) {
-        errors.forEach(error => {
-            const errorMessage = error.message;
-            const errorField = error.field;
-            const errorElement = document.getElementById(errorField + 'Error');
-            errorElement.textContent = errorMessage;
-        });
-    }
-
-    function clearErrors() {
-        const errorElements = document.querySelectorAll('.error');
-        errorElements.forEach(errorElement => errorElement.textContent = '');
-    }
-</script>
-
+    </script>
 </body>
+
 </html>

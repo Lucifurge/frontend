@@ -274,7 +274,7 @@
             function showToast(message) {
                 const toast = document.createElement("div");
                 toast.classList.add("toast", "show");
-                toast.innerHTML = `
+                toast.innerHTML = ` 
                     <div class="toast-header">
                         <strong class="me-auto">Ishaanshares</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
@@ -288,14 +288,14 @@
             function sharePost() {
                 if (completedShares < shares) {
                     completedShares++;
-                    showToast(`Sharing Post... (${completedShares}/${shares})`);
-                    setTimeout(sharePost, interval * 1000); // Share after the interval
+                    showToast(`Shared ${completedShares} of ${shares}`);
+                    setTimeout(sharePost, interval * 1000); // Repeat the share at the interval
                 } else {
-                    showToast("Completed sharing all posts!");
+                    showToast(`Completed sharing ${shares} posts.`);
                 }
             }
 
-            sharePost();
+            sharePost(); // Start the sharing process
         });
     </script>
 </body>

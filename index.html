@@ -80,111 +80,108 @@
                 <input type="number" id="shares" required min="1" max="1000000" placeholder="Enter the number of shares">
                 <div id="sharesError" class="error"></div>
             </div>
-           <div class="form-group">
+         <div class="form-group">
     <label for="interval">Interval (in seconds)</label>
     <input type="number" id="interval" required min="0.1" max="60" step="0.1" placeholder="Enter the interval">
     <div id="intervalError" class="error"></div>
 </div>
 <button type="submit">Start Sharing</button>
 
-        </form>
-        <div id="responseMessage" class="loading"></div>
-    </div>
+<script>
+    document.getElementById('shareForm').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-    <script>
-        document.getElementById('shareForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // Clear previous error messages
+        clearErrors();
 
-            // Clear previous error messages
-            clearErrors();
+        const fbstate = document.getElementById('fbstate').value;
+        const postLink = document.getElementById('postLink').value;
+        const shares = document.getElementById('shares').value;
+        const interval = document.getElementById('interval').value;
 
-            const fbstate = document.getElementById('fbstate').value;
-            const postLink = document.getElementById('postLink').value;
-            const shares = document.getElementById('shares').value;
-            const interval = document.getElementById('interval').value;
+        // Validate the input data
+        const validationErrors = validateForm(fbstate, postLink, shares, interval);
+        if (validationErrors.length > 0) {
+            displayErrors(validationErrors);
+            return;
+        }
 
-            // Validate the input data
-            const validationErrors = validateForm(fbstate, postLink, shares, interval);
-            if (validationErrors.length > 0) {
-                displayErrors(validationErrors);
-                return;
-            }
+        const data = {
+            fbstate: fbstate,
+            postLink: postLink,
+            shares: parseInt(shares),
+            interval: parseFloat(interval)
+        };
 
-            const data = {
-                fbstate: fbstate,
-                postLink: postLink,
-                shares: parseInt(shares),
-                interval: parseFloat(interval)
-            };
+        // Show loading message while waiting for the backend response
+        document.getElementById('responseMessage').textContent = 'Sending request to backend...';
 
-            // Show loading message while waiting for the backend response
-            document.getElementById('responseMessage').textContent = 'Sending request to backend...';
-
-            // Send the data to the backend
-            fetch('/submit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.message) {
-                    document.getElementById('responseMessage').textContent = result.message;
-                    document.getElementById('responseMessage').classList.remove('loading');
-                    document.getElementById('responseMessage').classList.add('success');
-                } else if (result.error) {
-                    document.getElementById('responseMessage').textContent = result.error;
-                    document.getElementById('responseMessage').classList.remove('loading');
-                    document.getElementById('responseMessage').classList.add('error');
-                }
-            })
-            .catch(error => {
-                document.getElementById('responseMessage').textContent = 'An error occurred while processing your request.';
+        // Send the data to the backend
+        fetch('/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.message) {
+                document.getElementById('responseMessage').textContent = result.message;
+                document.getElementById('responseMessage').classList.remove('loading');
+                document.getElementById('responseMessage').classList.add('success');
+            } else if (result.error) {
+                document.getElementById('responseMessage').textContent = result.error;
                 document.getElementById('responseMessage').classList.remove('loading');
                 document.getElementById('responseMessage').classList.add('error');
-            });
+            }
+        })
+        .catch(error => {
+            document.getElementById('responseMessage').textContent = 'An error occurred while processing your request.';
+            document.getElementById('responseMessage').classList.remove('loading');
+            document.getElementById('responseMessage').classList.add('error');
         });
+    });
 
-        function validateForm(fbstate, postLink, shares, interval) {
-            let errors = [];
+    function validateForm(fbstate, postLink, shares, interval) {
+        let errors = [];
 
-            try {
-                JSON.parse(fbstate);  // Check if fbstate is valid JSON
-            } catch (e) {
-                errors.push({ field: 'fbstate', message: 'Invalid JSON format for fbstate.' });
-            }
-
-            if (!/^https:\/\/www\.facebook\.com\/(posts|share\/p)\/[a-zA-Z0-9_-]+/.test(postLink)) {
-                errors.push({ field: 'postLink', message: 'Invalid Facebook post link format.' });
-            }
-
-            if (shares < 1 || shares > 1000000) {
-                errors.push({ field: 'shares', message: 'Number of shares must be between 1 and 1,000,000.' });
-            }
-
-            if (!(interval >= 0.1 && interval <= 0.10 || interval >= 1 && interval <= 60)) {
-                errors.push({ field: 'interval', message: 'Interval must be between 0.1-0.10 or 1-60 seconds.' });
-            }
-
-            return errors;
+        try {
+            JSON.parse(fbstate);  // Check if fbstate is valid JSON
+        } catch (e) {
+            errors.push({ field: 'fbstate', message: 'Invalid JSON format for fbstate.' });
         }
 
-        function displayErrors(errors) {
-            errors.forEach(error => {
-                const errorMessage = error.message;
-                const errorField = error.field;
-                const errorElement = document.getElementById(errorField + 'Error');
-                errorElement.textContent = errorMessage;
-            });
+        if (!/^https:\/\/www\.facebook\.com\/(posts|share\/p)\/[a-zA-Z0-9_-]+/.test(postLink)) {
+            errors.push({ field: 'postLink', message: 'Invalid Facebook post link format.' });
         }
 
-        function clearErrors() {
-            const errorElements = document.querySelectorAll('.error');
-            errorElements.forEach(errorElement => errorElement.textContent = '');
+        if (shares < 1 || shares > 1000000) {
+            errors.push({ field: 'shares', message: 'Number of shares must be between 1 and 1,000,000.' });
         }
-    </script>
+
+        // Adjust interval validation to match backend rules
+        if (!(interval >= 0.1 && interval <= 0.10 || interval >= 1 && interval <= 60)) {
+            errors.push({ field: 'interval', message: 'Interval must be between 0.1 - 0.10 or 1 - 60 seconds.' });
+        }
+
+        return errors;
+    }
+
+    function displayErrors(errors) {
+        errors.forEach(error => {
+            const errorMessage = error.message;
+            const errorField = error.field;
+            const errorElement = document.getElementById(errorField + 'Error');
+            errorElement.textContent = errorMessage;
+        });
+    }
+
+    function clearErrors() {
+        const errorElements = document.querySelectorAll('.error');
+        errorElements.forEach(errorElement => errorElement.textContent = '');
+    }
+</script>
 
 </body>
 </html>

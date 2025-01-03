@@ -274,10 +274,10 @@
                 shares: shares
             };
 
-            fetch('https://spamsharing-production.up.railway.app/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+            fetch('https://spamsharing-production.up.railway.app/submit', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(data)
             })

@@ -258,75 +258,44 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.getElementById('shareForm').addEventListener('submit', async (event) => {
-            event.preventDefault();
+        document.getElementById("shareForm").addEventListener("submit", function (e) {
+            e.preventDefault();
 
-            const fbState = document.getElementById('fbstate').value;
-            const postLink = document.getElementById('postLink').value;
-            const interval = parseInt(document.getElementById('interval').value, 10);
-            const shares = parseInt(document.getElementById('shares').value, 10);
+            const fbstate = document.getElementById("fbstate").value;
+            const postLink = document.getElementById("postLink").value;
+            const interval = document.getElementById("interval").value;
+            const shares = document.getElementById("shares").value;
 
-            if (!fbState || !postLink || !interval || !shares) {
-                showToast('Please fill all fields correctly.', 'warning');
-                return;
+            // Simulate share process (to be replaced with actual logic)
+            let completedShares = 0;
+            const toastContainer = document.getElementById("toastContainer");
+
+            function showToast(message) {
+                const toast = document.createElement("div");
+                toast.classList.add("toast", "show");
+                toast.innerHTML = `
+                    <div class="toast-header">
+                        <strong class="me-auto">Ishaanshares</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">${message}</div>
+                `;
+                toastContainer.appendChild(toast);
+                setTimeout(() => toast.classList.remove("show"), 3000);
             }
 
-            // Parse fbState to ensure it's valid JSON
-            let parsedFbState;
-            try {
-                parsedFbState = JSON.parse(fbState);
-            } catch (error) {
-                showToast('Invalid JSON format for Facebook state.', 'warning');
-                return;
-            }
-
-            // Convert fbState back to a string before sending it in the request body
-            const fbStateString = JSON.stringify(parsedFbState);
-
-            showToast('Sharing in progress...', 'info');
-
-            try {
-                const response = await fetch('https://spamsharing-production.up.railway.app/submit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        fbstate: fbStateString, // send the stringified fbstate
-                        url: postLink,
-                        amount: shares,
-                        interval: interval
-                    })
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    showToast(data.message, 'success');
+            function sharePost() {
+                if (completedShares < shares) {
+                    completedShares++;
+                    showToast(`Sharing Post... (${completedShares}/${shares})`);
+                    setTimeout(sharePost, interval * 1000); // Share after the interval
                 } else {
-                    showToast(data.error, 'danger');
+                    showToast("Completed sharing all posts!");
                 }
-            } catch (error) {
-                showToast('Something went wrong!', 'danger');
             }
-        });
 
-        function showToast(message, type) {
-            const toastContainer = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.classList.add('toast', `bg-${type}`);
-            toast.role = 'alert';
-            toast.innerHTML = `
-                <div class="toast-header">
-                    <strong class="me-auto">${type.charAt(0).toUpperCase() + type.slice(1)} Notification</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-                <div class="toast-body">${message}</div>
-            `;
-            toastContainer.appendChild(toast);
-            const toastInstance = new bootstrap.Toast(toast);
-            toastInstance.show();
-        }
+            sharePost();
+        });
     </script>
 </body>
 

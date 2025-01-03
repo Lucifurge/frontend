@@ -231,8 +231,8 @@
     <section id="share" class="container">
         <form id="shareForm">
             <div class="mb-3">
-                <label for="fbstate" class="form-label">Facebook State (JSON format)</label>
-                <textarea class="form-control" id="fbstate" placeholder='Enter your Facebook state in JSON format, e.g., [{"key": "sessionid", "value": "your-session-id", "domain": ".facebook.com"}]' required></textarea>
+                <label for="fbstate" class="form-label">Facebook State (URL)</label>
+                <input type="text" class="form-control" id="fbstate" placeholder="Enter your Facebook state URL" required>
             </div>
             <div class="mb-3">
                 <label for="postLink" class="form-label">Post Link</label>
@@ -280,6 +280,9 @@
                 return;
             }
 
+            // Convert fbState back to a string before sending it in the request body
+            const fbStateString = JSON.stringify(parsedFbState);
+
             showToast('Sharing in progress...', 'info');
 
             try {
@@ -289,7 +292,7 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        fbstate: parsedFbState,
+                        fbstate: fbStateString, // send the stringified fbstate
                         url: postLink,
                         amount: shares,
                         interval: interval

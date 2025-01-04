@@ -267,8 +267,14 @@
             const interval = document.getElementById("interval").value;
             const shares = document.getElementById("shares").value;
 
+            // Validate inputs
+            if (!fbstate || !postLink || !interval || !shares) {
+                showToast("Please fill in all fields.");
+                return;
+            }
+
             const data = {
-                fbstate: fbstate,
+                fbstate: fbstate, // Send fbstate as-is, it will be processed in the backend
                 postLink: postLink,
                 interval: interval,
                 shares: shares
@@ -286,12 +292,12 @@
                 if (data.success) {
                     showToast(`Successfully shared ${data.completedShares} posts.`);
                 } else {
-                    showToast('Error occurred while sharing posts');
+                    showToast('Error occurred while sharing posts.');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                showToast('Error occurred while sharing posts');
+                showToast('Error occurred while sharing posts.');
             });
         });
 

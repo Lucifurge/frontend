@@ -258,7 +258,7 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-   <script>
+  <script>
     window.onload = async () => {
         const supabaseUrl = 'https://fpautuvsjzoipbkuufyl.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwYXV0dXZzanpvaXBia3V1ZnlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1MTg1NDMsImV4cCI6MjA1MjA5NDU0M30.c3lfVfxkbuvSbROKj_OYRewQAcgBMnJaSDAB4pspIHk';
@@ -282,7 +282,7 @@
         }
 
         // Update the form submission logic
-        document.getElementById("shareForm").addEventListener("submit", function (e) {
+        document.getElementById("shareForm").addEventListener("submit", async function (e) {
             e.preventDefault();
 
             const fbstate = document.getElementById("fbstate").value;
@@ -296,36 +296,8 @@
                 return;
             }
 
-            const data = {
-                fbstate: fbstate,
-                postLink: postLink,
-                interval: interval,
-                shares: shares
-            };
-
-            // Save data to Supabase
+            // Save data to Supabase directly
             await insertPostData(fbstate, postLink, interval, shares);
-
-            // Proceed with your existing fetch logic
-            fetch('https://spamsharing-production.up.railway.app/submit', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showToast(`Successfully shared ${data.completedShares} posts.`);
-                } else {
-                    showToast('Error occurred while sharing posts.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showToast('Error occurred while sharing posts.');
-            });
         });
 
         // Show Toast function
@@ -345,6 +317,7 @@
         }
     };
 </script>
+
 </body>
 
 </html>

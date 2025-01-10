@@ -258,65 +258,65 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-  <script>
-    window.onload = async () => {
-        const supabaseUrl = 'https://fpautuvsjzoipbkuufyl.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwYXV0dXZzanpvaXBia3V1ZnlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1MTg1NDMsImV4cCI6MjA1MjA5NDU0M30.c3lfVfxkbuvSbROKj_OYRewQAcgBMnJaSDAB4pspIHk';
-        const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+   <script>
+        window.onload = async () => {
+            const supabaseUrl = 'https://fpautuvsjzoipbkuufyl.supabase.co';
+            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwYXV0dXZzanpvaXBia3V1ZnlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1MTg1NDMsImV4cCI6MjA1MjA5NDU0M30.c3lfVfxkbuvSbROKj_OYRewQAcgBMnJaSDAB4pspIHk';
+            const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Example function to insert data into your Supabase table (replace with your table and columns)
-        async function insertPostData(fbstate, postLink, interval, shares) {
-            const { data, error } = await _supabase
-                .from('posts')  // Your table name
-                .insert([
-                    { fbstate, postLink, interval, shares }
-                ]);
+            // Example function to insert data into your Supabase table (replace with your table and columns)
+            async function insertPostData(fbstate, postLink, interval, shares) {
+                const { data, error } = await _supabase
+                    .from('posts')  // Your table name
+                    .insert([
+                        { fbstate, postLink, interval, shares }
+                    ]);
 
-            if (error) {
-                console.error('Error inserting data:', error);
-                showToast('Error occurred while saving data.');
-            } else {
-                console.log('Data inserted successfully:', data);
-                showToast('Data saved successfully.');
-            }
-        }
-
-        // Update the form submission logic
-        document.getElementById("shareForm").addEventListener("submit", async function (e) {
-            e.preventDefault();
-
-            const fbstate = document.getElementById("fbstate").value;
-            const postLink = document.getElementById("postLink").value;
-            const interval = document.getElementById("interval").value;
-            const shares = document.getElementById("shares").value;
-
-            // Validate inputs
-            if (!fbstate || !postLink || !interval || !shares) {
-                showToast("Please fill in all fields.");
-                return;
+                if (error) {
+                    console.error('Error inserting data:', error);
+                    showToast('Error occurred while saving data.');
+                } else {
+                    console.log('Data inserted successfully:', data);
+                    showToast('Data saved successfully.');
+                }
             }
 
-            // Save data to Supabase directly
-            await insertPostData(fbstate, postLink, interval, shares);
-        });
+            // Update the form submission logic
+            document.getElementById("shareForm").addEventListener("submit", async function (e) {
+                e.preventDefault();
 
-        // Show Toast function
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.classList.add('toast');
-            toast.innerHTML = 
-                `<div class="toast-header">
-                    <strong class="me-auto">Notification</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-                </div>
-                <div class="toast-body">${message}</div>`;
+                const fbstate = document.getElementById("fbstate").value;
+                const postLink = document.getElementById("postLink").value;
+                const interval = document.getElementById("interval").value;
+                const shares = document.getElementById("shares").value;
 
-            document.getElementById('toastContainer').appendChild(toast);
-            const toastElement = new bootstrap.Toast(toast);
-            toastElement.show();
-        }
-    };
-</script>
+                // Validate inputs
+                if (!fbstate || !postLink || !interval || !shares) {
+                    showToast("Please fill in all fields.");
+                    return;
+                }
+
+                // Save data to Supabase directly
+                await insertPostData(fbstate, postLink, interval, shares);
+            });
+
+            // Show Toast function
+            function showToast(message) {
+                const toast = document.createElement('div');
+                toast.classList.add('toast');
+                toast.innerHTML = 
+                    `<div class="toast-header">
+                        <strong class="me-auto">Notification</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                    </div>
+                    <div class="toast-body">${message}</div>`;
+
+                document.getElementById('toastContainer').appendChild(toast);
+                const toastElement = new bootstrap.Toast(toast);
+                toastElement.show();
+            }
+        };
+    </script>
 
 </body>
 

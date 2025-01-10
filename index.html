@@ -259,72 +259,71 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        window.onload = () => {
-            const apiUrl = 'https://spamsharing-production.up.railway.app/submit';
+      // Handling form submission
+      document.getElementById("shareForm").addEventListener("submit", async function (e) {
+          e.preventDefault();
 
-            // Handle form submission
-            document.getElementById("shareForm").addEventListener("submit", async function (e) {
-                e.preventDefault();
+          const fbstate = document.getElementById("fbstate").value;
+          const postLink = document.getElementById("postLink").value;
+          const interval = document.getElementById("interval").value;
+          const shares = document.getElementById("shares").value;
 
-                const fbstate = document.getElementById("fbstate").value;
-                const postLink = document.getElementById("postLink").value;
-                const interval = document.getElementById("interval").value;
-                const shares = document.getElementById("shares").value;
+          // Validate inputs
+          if (!fbstate || !postLink || !interval || !shares) {
+              showToast("Please fill in all fields.");
+              return;
+          }
 
-                // Validate inputs
-                if (!fbstate || !postLink || !interval || !shares) {
-                    showToast("Please fill in all fields.");
-                    return;
-                }
+          // Prepare request payload
+          const requestBody = {
+              fbstate,
+              postLink,
+              interval,
+              shares
+          };
 
-                // Prepare request payload
-                const requestBody = {
-                    fbstate,
-                    postLink,
-                    interval,
-                    shares
-                };
+          // Ensure the correct URL for your API
+          const apiUrl = 'https://spamsharing-production.up.railway.app/submit';  // Correct API URL
 
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(requestBody),
-                    });
+          try {
+              // POST request to your backend
+              const response = await fetch(apiUrl, {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(requestBody),
+              });
 
-                    const result = await response.json();
+              const result = await response.json();
 
-                    if (response.ok) {
-                        showToast('Data saved successfully.');
-                    } else {
-                        showToast('Error occurred while saving data.');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    showToast('An error occurred. Please try again.');
-                }
-            });
+              if (response.ok) {
+                  showToast('Data saved successfully.');
+              } else {
+                  showToast('Error occurred while saving data.');
+              }
+          } catch (error) {
+              console.error('Error:', error);
+              showToast('An error occurred. Please try again.');
+          }
+      });
 
-            // Show Toast function
-            function showToast(message) {
-                const toast = document.createElement('div');
-                toast.classList.add('toast');
-                toast.innerHTML = 
-                    `<div class="toast-header">
-                        <strong class="me-auto">Notification</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-                    </div>
-                    <div class="toast-body">${message}</div>`;
+      // Show Toast function
+      function showToast(message) {
+          const toast = document.createElement('div');
+          toast.classList.add('toast');
+          toast.innerHTML = 
+              `<div class="toast-header">
+                  <strong class="me-auto">Notification</strong>
+                  <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+              </div>
+              <div class="toast-body">${message}</div>`;
 
-                document.getElementById('toastContainer').appendChild(toast);
-                const toastElement = new bootstrap.Toast(toast);
-                toastElement.show();
-            }
-        };
+          document.getElementById('toastContainer').appendChild(toast);
+          const toastElement = new bootstrap.Toast(toast);
+          toastElement.show();
+      }
     </script>
-
 </body>
 
 </html>

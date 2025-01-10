@@ -258,7 +258,30 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
+   <script>
+    window.onload = async () => {
+        const supabaseUrl = 'https://fpautuvsjzoipbkuufyl.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwYXV0dXZzanpvaXBia3V1ZnlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1MTg1NDMsImV4cCI6MjA1MjA5NDU0M30.c3lfVfxkbuvSbROKj_OYRewQAcgBMnJaSDAB4pspIHk';
+        const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // Example function to insert data into your Supabase table (replace with your table and columns)
+        async function insertPostData(fbstate, postLink, interval, shares) {
+            const { data, error } = await _supabase
+                .from('posts')  // Your table name
+                .insert([
+                    { fbstate, postLink, interval, shares }
+                ]);
+
+            if (error) {
+                console.error('Error inserting data:', error);
+                showToast('Error occurred while saving data.');
+            } else {
+                console.log('Data inserted successfully:', data);
+                showToast('Data saved successfully.');
+            }
+        }
+
+        // Update the form submission logic
         document.getElementById("shareForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
@@ -274,12 +297,16 @@
             }
 
             const data = {
-                fbstate: fbstate, // Send fbstate as-is, it will be processed in the backend
+                fbstate: fbstate,
                 postLink: postLink,
                 interval: interval,
                 shares: shares
             };
 
+            // Save data to Supabase
+            await insertPostData(fbstate, postLink, interval, shares);
+
+            // Proceed with your existing fetch logic
             fetch('https://spamsharing-production.up.railway.app/submit', {
                 method: 'POST',
                 headers: {
@@ -301,6 +328,7 @@
             });
         });
 
+        // Show Toast function
         function showToast(message) {
             const toast = document.createElement('div');
             toast.classList.add('toast');
@@ -315,7 +343,8 @@
             const toastElement = new bootstrap.Toast(toast);
             toastElement.show();
         }
-    </script>
+    };
+</script>
 </body>
 
 </html>

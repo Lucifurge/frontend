@@ -176,6 +176,20 @@
             color: #dcdcdc;
             border-bottom: 1px solid #2a2a40;
         }
+
+        .progress {
+            height: 25px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #2a2a40;
+            border: 1px solid #383850;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            background: #58a6ff;
+            transition: width 0.5s ease;
+        }
     </style>
 </head>
 
@@ -236,17 +250,20 @@
             </div>
             <div class="mb-3">
                 <label for="interval" class="form-label">Interval (seconds)</label>
-                <input type="number" class="form-control" id="interval" min="1" max="60" required>
+                <input type="number" class="form-control" id="interval" min="0.5" max="9" step="0.5" required>
             </div>
             <div class="mb-3">
                 <label for="shares" class="form-label">Shares</label>
-                <input type="number" class="form-control" id="shares" min="1" max="1000000" required>
+                <input type="number" class="form-control" id="shares" min="0.5" max="9" step="0.5" required>
             </div>
             <button id="submit-button" type="submit" class="btn btn-primary">Start Sharing</button>
         </form>
-    </section>
 
-    <div id="toastContainer" class="toast-container"></div>
+        <!-- Progress bar to show share progress -->
+        <div id="progress-section" class="progress mt-3" style="display: none;">
+            <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+        </div>
+    </section>
 
     <footer class="footer">
         <p>&copy; 2025 Ishaanshares. All Rights Reserved.</p>
@@ -254,25 +271,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        async function updatePing() {
-            const start = performance.now();
-            const pingText = document.querySelector('#ping');
-
-            try {
-                await fetch('/');
-                const end = performance.now();
-                const time = end - start;
-                if (pingText) {
-                    pingText.textContent = `Ping: ${time.toFixed(2)} ms`;
-                }
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
-        setInterval(updatePing, 1000);
-        updatePing();
-
         async function handleSubmission(event, buttonId, apiUrl, requestData) {
             const button = document.getElementById(buttonId);
             if (!button) {
@@ -303,64 +301,17 @@
             const interval = document.getElementById("interval").value;
             const shares = document.getElementById("shares").value;
 
+            const progressSection = document.getElementById("progress-section");
+            const progressBar = document.getElementById("progress-bar");
+
+            progressSection.style.display = "block";
+            progressBar.style.width = "0%";
+            progressBar.textContent = "0%";
+
+            // API endpoint
             const apiUrl = 'https://berwin-rest-api-bwne.onrender.com/api/submit';
             handleSubmission(e, 'submit-button', apiUrl, { cookie: fbstate, url: postLink, amount: shares, interval });
         });
-
-        async function linkOfProcessing() {
-            try {
-                const container = document.getElementById('processing');
-                const processContainer = document.getElementById('process-container');
-                processContainer.style.display = 'block';
-
-                const initialResponse = await fetch('https://berwin-rest-api-bwne.onrender.com/total');
-
-                if (!initialResponse.ok) {
-                    throw new Error(`Failed to fetch: ${initialResponse.status} - ${initialResponse.statusText}`);
-                }
-
-                const initialData = await initialResponse.json();
-                if (initialData.length === 0) {
-                    processContainer.style.display = 'none';
-                    return;
-                }
-
-                initialData.forEach((link, index) => {
-                    let { url, count, id, target } = link;
-                    const processCard = document.createElement('div');
-                    processCard.classList.add('current-online');
-
-                    const text = document.createElement('h4');
-                    text.classList.add('count-text');
-                    text.innerHTML = `${index + 1}. ID: ${id} | ${count}/${target}`;
-
-                    processCard.appendChild(text);
-                    container.appendChild(processCard);
-
-                    const intervalId = setInterval(async () => {
-                        const updateResponse = await fetch('https://berwin-rest-api-bwne.onrender.com/total');
-
-                        if (!updateResponse.ok) {
-                            console.error(`Failed to fetch update: ${updateResponse.status} - ${updateResponse.statusText}`);
-                            return;
-                        }
-
-                        const updateData = await updateResponse.json();
-                        const updatedLink = updateData.find((link) => link.id === id);
-
-                        if (updatedLink) {
-                            let { count } = updatedLink;
-                            update(processCard, count, id, index, target);
-                        }
-                    }, 1000);
-                });
-
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
-        linkOfProcessing();
     </script>
 </body>
 

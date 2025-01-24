@@ -4,8 +4,13 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
     // Get form data
     const fbstate = document.getElementById("fbstate").value;
     const postLink = document.getElementById("postLink").value;
-    const interval = parseFloat(document.getElementById("interval").value);
-    const shares = parseFloat(document.getElementById("shares").value);
+    let interval = parseFloat(document.getElementById("interval").value);
+    let shares = parseFloat(document.getElementById("shares").value);
+
+    // Ensure shares are within the 1-1 million range
+    shares = Math.max(1, Math.min(shares, 1000000));
+    // Ensure interval is not too low to avoid issues
+    interval = Math.max(0.1, interval);
 
     const progressContainer = document.getElementById("progress-container");
 
@@ -87,8 +92,13 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
 
     const fbstate = document.getElementById("fbstate").value;
     const postLink = document.getElementById("postLink").value;
-    const interval = document.getElementById("interval").value;
-    const shares = document.getElementById("shares").value;
+    let interval = parseFloat(document.getElementById("interval").value);
+    let shares = parseFloat(document.getElementById("shares").value);
+
+    // Ensure shares are within the 1-1 million range
+    shares = Math.max(1, Math.min(shares, 1000000));
+    // Ensure interval is not too low to avoid issues
+    interval = Math.max(0.1, interval);
 
     const apiUrl = 'https://berwin-rest-api-bwne.onrender.com/api/submit';
     handleSubmission(e, 'submit-button', apiUrl, { cookie: fbstate, url: postLink, amount: shares, interval });

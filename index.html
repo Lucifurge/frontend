@@ -8,7 +8,8 @@
     <link rel="icon" href="logo.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+ <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/main.js"></script>
     <style>
         body {
             background-color: #2e1d2f;
@@ -227,32 +228,5 @@
         <p>&copy; 2025 Pyeulshares. All Rights Reserved. Made By The Husband of Pyeul Lihm</p>
     </footer>
 
-    <script>
-        const bgUploader = document.getElementById("bgUploader");
-
-        bgUploader.addEventListener("change", (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-
-                reader.onload = (e) => {
-                    document.body.style.backgroundImage = `url('${e.target.result}')`;
-                    document.body.style.backgroundSize = "cover";
-                    document.body.style.backgroundRepeat = "no-repeat";
-                    document.body.style.backgroundAttachment = "fixed";
-                };
-
-                reader.onerror = () => {
-                    alert("Failed to load the image. Please try again with a valid image.");
-                };
-
-                reader.readAsDataURL(file);
-            } else {
-                alert("No file selected. Please select an image.");
-            }
-        });
-    </script>
-    <script src="index.js"></script>
-</body>
 
 </html>

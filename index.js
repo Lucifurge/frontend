@@ -1,6 +1,7 @@
 document.getElementById("shareForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
+    // Get form data
     const fbstate = document.getElementById("fbstate").value;
     const postLink = document.getElementById("postLink").value;
     const interval = parseFloat(document.getElementById("interval").value);
@@ -62,7 +63,7 @@ async function handleSubmission(event, buttonId, apiUrl, requestData) {
         return;
     }
     try {
-        button.innerText = 'Submitting';
+        button.innerText = 'Submitting...';
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -70,7 +71,12 @@ async function handleSubmission(event, buttonId, apiUrl, requestData) {
         });
 
         const data = await response.json();
-        button.innerText = data.status === 200 ? 'Submitted' : 'Submit';
+        if (data.status === 200) {
+            button.innerText = 'Submitted';
+        } else {
+            button.innerText = 'Submit';
+            console.error('Submission failed:', data);
+        }
     } catch (error) {
         console.error('Error:', error);
         button.innerText = 'Submit';

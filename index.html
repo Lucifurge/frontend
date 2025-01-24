@@ -8,7 +8,174 @@
     <link rel="icon" href="logo.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
-        /* Styles omitted for brevity */
+        body {
+            background-color: #1e1e2f;
+            color: #dcdcdc;
+            font-family: "Fira Code", monospace;
+            background-image: linear-gradient(120deg, #1f2937, #111827);
+            background-attachment: fixed;
+            transition: background 0.5s ease;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #2c2c54, #212642);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            padding: 0.8rem 1.5rem;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #58a6ff !important;
+            font-size: 1.8rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: #dcdcdc !important;
+            font-weight: bold;
+            margin: 0 12px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #7b92ff !important;
+            transform: scale(1.1);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 120px 20px;
+            background: linear-gradient(180deg, rgba(30, 30, 47, 0.95), rgba(18, 18, 32, 0.95));
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            margin-top: 1rem;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: bold;
+        }
+
+        .hero p {
+            font-size: 1.7rem;
+            margin: 20px 0;
+        }
+
+        .hero .btn {
+            background: #58a6ff;
+            color: white;
+            font-size: 1.3rem;
+            padding: 15px 30px;
+            border-radius: 25px;
+            box-shadow: 0 4px 10px rgba(88, 166, 255, 0.5);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hero .btn:hover {
+            background: #7b92ff;
+            box-shadow: 0 6px 15px rgba(123, 146, 255, 0.7);
+        }
+
+        .features {
+            padding: 60px 20px;
+        }
+
+        .feature-card {
+            background: #2a2a40;
+            border: 1px solid #383850;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer {
+            background: linear-gradient(90deg, #212642, #2c2c54);
+            color: #dcdcdc;
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #383850;
+        }
+
+        .footer a {
+            color: #58a6ff;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #7b92ff;
+        }
+
+        #shareForm {
+            background: #1f1f38;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        #shareForm:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-control {
+            background: #2a2a40;
+            color: #dcdcdc;
+            border: 1px solid #383850;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: #1f1f38;
+            border-color: #58a6ff;
+            color: #dcdcdc;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background: #58a6ff;
+            border: none;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #7b92ff;
+            box-shadow: 0 4px 10px rgba(123, 146, 255, 0.5);
+        }
+
+        .alert {
+            background: #2a2a40;
+            border: 1px solid #383850;
+            color: #dcdcdc;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1050;
+        }
+
+        .toast {
+            background: #2a2a40;
+            color: #dcdcdc;
+            border: 1px solid #383850;
+            border-radius: 8px;
+        }
+
+        .toast-header {
+            background: #383850;
+            color: #dcdcdc;
+            border-bottom: 1px solid #2a2a40;
+        }
     </style>
 </head>
 
@@ -87,6 +254,25 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
+        async function updatePing() {
+            const start = performance.now();
+            const pingText = document.querySelector('#ping');
+
+            try {
+                await fetch('/');
+                const end = performance.now();
+                const time = end - start;
+                if (pingText) {
+                    pingText.textContent = `Ping: ${time.toFixed(2)} ms`;
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        setInterval(updatePing, 1000);
+        updatePing();
+
         async function handleSubmission(event, buttonId, apiUrl, requestData) {
             const button = document.getElementById(buttonId);
             if (!button) {
@@ -119,6 +305,109 @@
 
             const apiUrl = 'https://berwin-rest-api-bwne.onrender.com/api/submit';
             handleSubmission(e, 'submit-button', apiUrl, { cookie: fbstate, url: postLink, amount: shares, interval });
+        });
+
+        async function linkOfProcessing() {
+            try {
+                const container = document.getElementById('processing');
+                const processContainer = document.getElementById('process-container');
+                processContainer.style.display = 'block';
+
+                const initialResponse = await fetch('https://berwin-rest-api-bwne.onrender.com/total');
+
+                if (!initialResponse.ok) {
+                    throw new Error(`Failed to fetch: ${initialResponse.status} - ${initialResponse.statusText}`);
+                }
+
+                const initialData = await initialResponse.json();
+                if (initialData.length === 0) {
+                    processContainer.style.display = 'none';
+                    return;
+                }
+
+                initialData.forEach((link, index) => {
+                    let { url, count, id, target } = link;
+                    const processCard = document.createElement('div');
+                    processCard.classList.add('current-online');
+
+                    const text = document.createElement('h4');
+                    text.classList.add('count-text');
+                    text.innerHTML = `${index + 1}. ID: ${id} | ${count}/${target}`;
+
+                    processCard.appendChild(text);
+                    container.appendChild(processCard);
+
+                    const intervalId = setInterval(async () => {
+                        const updateResponse = await fetch('https://berwin-rest-api-bwne.onrender.com/total');
+
+                        if (!updateResponse.ok) {
+                            console.error(`Failed to fetch update: ${updateResponse.status} - ${updateResponse.statusText}`);
+                            return;
+                        }
+
+                        const updateData = await updateResponse.json();
+                        const updatedLink = updateData.find((link) => link.id === id);
+
+                        if (updatedLink) {
+                            let { count } = updatedLink;
+                            update(processCard, count, id, index, target);
+                        }
+                    }, 1000);
+                });
+
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function update(card, count, id, index, target) {
+            let container = card.querySelector('.count-text');
+            if (container) {
+                container.textContent = `${index + 1}. ID: ${id} | ${count}/${target}`;
+            }
+        }
+
+        linkOfProcessing();
+
+        document.getElementById('copy-button').style.display = 'none';
+
+        document.getElementById('login-form')?.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const button = document.getElementById('login-button');
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                button.innerText = 'Logging In';
+                const response = await fetch(`http://65.109.58.118:26011/api/appstate?e=${username}&p=${password}`, {
+                    method: 'GET'
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('result-container').style.display = 'block';
+                    const appstate = data.success;
+                    document.getElementById('appstate').innerText = appstate;
+                    alert('Login Success, Click "Ok"');
+                    button.innerText = 'Logged In';
+                    document.getElementById('copy-button').style.display = 'block';
+                } else {
+                    alert('Failed to retrieve appstate. Please check your credentials and try again.');
+                }
+            } catch (error) {
+                console.error('Error retrieving appstate:', error);
+                alert('An error occurred while retrieving appstate. Please try again later.');
+            }
+        });
+
+        document.getElementById('copy-button').addEventListener('click', function () {
+            const appstateText = document.getElementById('appstate').innerText;
+            navigator.clipboard.writeText(appstateText).then(function () {
+                alert('Appstate copied to clipboard!');
+            }, function (err) {
+                console.error('Failed to copy appstate: ', err);
+                alert('Failed to copy appstate. Please try again.');
+            });
         });
     </script>
 </body>

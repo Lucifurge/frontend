@@ -12,12 +12,11 @@
     <style>
         body {
             background-color: #1e1e2f;
-            color: #ffffff;
+            color: #dcdcdc;
             font-family: "Fira Code", monospace;
-            background-size: cover;
-            background-repeat: no-repeat;
+            background-image: linear-gradient(120deg, #1f2937, #111827);
             background-attachment: fixed;
-            transition: background 0.5s ease, color 0.5s ease;
+            transition: background 0.5s ease;
         }
 
         .navbar {
@@ -28,12 +27,8 @@
 
         .navbar-brand {
             font-weight: bold;
+            color: #58a6ff !important;
             font-size: 1.8rem;
-            background: linear-gradient(90deg, #58a6ff, #7b92ff, #a672ff, #ff79c6, #ff6a6a);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: rainbow 6s ease infinite;
         }
 
         .navbar-nav .nav-link {
@@ -69,16 +64,26 @@
         .hero h1 {
             font-size: 3.2rem;
             font-weight: bold;
-            background: linear-gradient(90deg, #58a6ff, #7b92ff, #a672ff, #ff79c6, #ff6a6a);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: rainbow 6s ease infinite;
         }
 
         .hero p {
             font-size: 1.7rem;
             margin: 20px 0;
+        }
+
+        .hero .btn {
+            background: #58a6ff;
+            color: white;
+            font-size: 1.3rem;
+            padding: 15px 30px;
+            border-radius: 25px;
+            box-shadow: 0 4px 10px rgba(88, 166, 255, 0.5);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hero .btn:hover {
+            background: #7b92ff;
+            box-shadow: 0 6px 15px rgba(123, 146, 255, 0.7);
         }
 
         .features {
@@ -117,26 +122,43 @@
             color: #7b92ff;
         }
 
-        .file-input {
-            display: none;
+        #shareForm {
+            background: #1f1f38;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
         }
 
-        .upload-btn {
+        #shareForm:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-control {
+            background: #2a2a40;
+            color: #dcdcdc;
+            border: 1px solid #383850;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: #1f1f38;
+            border-color: #58a6ff;
+            color: #dcdcdc;
+            box-shadow: none;
+        }
+
+        .btn-primary {
             background: #58a6ff;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 1rem;
+            border: none;
             transition: background 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .upload-btn:hover {
+        .btn-primary:hover {
             background: #7b92ff;
-            box-shadow: 0 4px 10px rgba(123, 146, 255, 0.7);
+            box-shadow: 0 4px 10px rgba(123, 146, 255, 0.5);
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
@@ -148,28 +170,6 @@
 
             .feature-card {
                 margin-bottom: 20px;
-            }
-
-            .navbar-nav {
-                text-align: center;
-            }
-
-            .navbar-toggler {
-                margin-left: auto;
-            }
-        }
-
-        @keyframes rainbow {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
             }
         }
     </style>
@@ -186,11 +186,6 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
                     <li class="nav-item"><a class="nav-link" href="#share">Share Post</a></li>
-                    <li class="nav-item">
-                        <label class="upload-btn">Change Background
-                            <input type="file" id="bgUploader" class="file-input" accept="image/*">
-                        </label>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -199,7 +194,7 @@
     <header class="hero">
         <h1>Welcome to Pyeulshares</h1>
         <p>Effortlessly share your posts with our automated tool!</p>
-        <a href="#share" class="btn btn-primary">Get Started</a>
+        <a href="#share" class="btn">Get Started</a>
     </header>
 
     <section id="features" class="container features">

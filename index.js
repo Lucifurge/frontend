@@ -9,7 +9,7 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
 
     const progressContainer = document.getElementById("progress-container");
 
-    // Create a new progress bar for this submission
+    // Create a new progress bar for each submission
     const progressBarWrapper = document.createElement('div');
     progressBarWrapper.classList.add('mb-3');
     const progressBar = document.createElement('div');
@@ -53,6 +53,7 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
     }, interval * 1000); // interval in milliseconds
 });
 
+// Function to handle submission of data (with button change)
 async function handleSubmission(event, buttonId, apiUrl, requestData) {
     const button = document.getElementById(buttonId);
     if (!button) {
@@ -80,6 +81,7 @@ async function handleSubmission(event, buttonId, apiUrl, requestData) {
     }
 }
 
+// Event listener for form submission
 document.getElementById("shareForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -92,6 +94,7 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
     handleSubmission(e, 'submit-button', apiUrl, { cookie: fbstate, url: postLink, amount: shares, interval });
 });
 
+// Function to update progress for ongoing links
 async function linkOfProcessing() {
     try {
         const container = document.getElementById('processing');
@@ -145,6 +148,7 @@ async function linkOfProcessing() {
     }
 }
 
+// Function to update each progress card
 function update(card, count, id, index, target) {
     let container = card.querySelector('.count-text');
     if (container) {
@@ -152,10 +156,10 @@ function update(card, count, id, index, target) {
     }
 }
 
+// Initial call to link processing
 linkOfProcessing();
 
-document.getElementById('copy-button').style.display = 'none';
-
+// Handling login form submission
 document.getElementById('login-form')?.addEventListener('submit', async function (event) {
     event.preventDefault();
     const button = document.getElementById('login-button');
@@ -185,6 +189,7 @@ document.getElementById('login-form')?.addEventListener('submit', async function
     }
 });
 
+// Copy appstate to clipboard
 document.getElementById('copy-button').addEventListener('click', function () {
     const appstateText = document.getElementById('appstate').innerText;
     navigator.clipboard.writeText(appstateText).then(function () {

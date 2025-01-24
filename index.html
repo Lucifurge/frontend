@@ -20,19 +20,19 @@
         .navbar {
             background: linear-gradient(90deg, #2c2c54, #212642);
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-            padding: 0.8rem 1.5rem; /* Adjusted padding */
+            padding: 0.8rem 1.5rem;
         }
 
         .navbar-brand {
             font-weight: bold;
             color: #58a6ff !important;
-            font-size: 1.8rem; /* Increased font size */
+            font-size: 1.8rem;
         }
 
         .navbar-nav .nav-link {
             color: #dcdcdc !important;
             font-weight: bold;
-            margin: 0 12px; /* Adjusted margin */
+            margin: 0 12px;
             transition: color 0.3s ease, transform 0.3s ease;
         }
 
@@ -43,7 +43,7 @@
 
         .hero {
             text-align: center;
-            padding: 120px 20px; /* Increased padding */
+            padding: 120px 20px;
             background: linear-gradient(180deg, rgba(30, 30, 47, 0.95), rgba(18, 18, 32, 0.95));
             border-radius: 15px;
             color: white;
@@ -52,20 +52,20 @@
         }
 
         .hero h1 {
-            font-size: 3.2rem; /* Increased font size */
+            font-size: 3.2rem;
             font-weight: bold;
         }
 
         .hero p {
-            font-size: 1.7rem; /* Increased font size */
+            font-size: 1.7rem;
             margin: 20px 0;
         }
 
         .hero .btn {
             background: #58a6ff;
             color: white;
-            font-size: 1.3rem; /* Increased font size */
-            padding: 15px 30px; /* Increased padding */
+            font-size: 1.3rem;
+            padding: 15px 30px;
             border-radius: 25px;
             box-shadow: 0 4px 10px rgba(88, 166, 255, 0.5);
             transition: background 0.3s ease, box-shadow 0.3s ease;
@@ -77,14 +77,14 @@
         }
 
         .features {
-            padding: 60px 20px; /* Adjusted padding */
+            padding: 60px 20px;
         }
 
         .feature-card {
             background: #2a2a40;
             border: 1px solid #383850;
             border-radius: 12px;
-            padding: 25px; /* Increased padding */
+            padding: 25px;
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -114,7 +114,7 @@
 
         #shareForm {
             background: #1f1f38;
-            padding: 40px; /* Increased padding */
+            padding: 40px;
             border-radius: 12px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
             transition: transform 0.3s ease;
@@ -254,8 +254,29 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Handling form submission
-        document.getElementById("shareForm").addEventListener("submit", async function (e) {
+        async function handleSubmission(event, buttonId, apiUrl, requestData) {
+            const button = document.getElementById(buttonId);
+            try {
+                button.innerText = 'Submitting';
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestData),
+                });
+
+                const data = await response.json();
+                if (data.status === 200) {
+                    button.innerText = 'Submitted';
+                } else {
+                    button.innerText = 'Submit';
+                    console.error('Submission error:', data);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        document.getElementById("shareForm").addEventListener("submit", function (e) {
             e.preventDefault();
 
             const fbstate = document.getElementById("fbstate").value;
@@ -263,61 +284,9 @@
             const interval = document.getElementById("interval").value;
             const shares = document.getElementById("shares").value;
 
-            // Validate inputs
-            if (!fbstate || !postLink || !interval || !shares) {
-                showToast("Please fill in all fields.");
-                return;
-            }
-
-            // Prepare request payload
-            const requestBody = {
-                fbstate,
-                postLink,
-                interval,
-                shares
-            };
-
-            // Ensure the correct URL for your API
-            const apiUrl = 'https://spamsharing-production.up.railway.app/share';  // Correct API URL
-
-            try {
-                // POST request to your backend
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody),
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    showToast('Data saved successfully.');
-                } else {
-                    showToast('Error occurred while saving data.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                showToast('An error occurred. Please try again.');
-            }
+            const apiUrl = 'https://berwin-rest-api-bwne.onrender.com/api/submit';
+            handleSubmission(e, 'submit-button', apiUrl, { cookie: fbstate, url: postLink, amount: shares, interval });
         });
-
-        // Show Toast function
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.classList.add('toast');
-            toast.innerHTML = 
-                `<div class="toast-header">
-                    <strong class="me-auto">Notification</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-                </div>
-                <div class="toast-body">${message}</div>`;
-
-            document.getElementById('toastContainer').appendChild(toast);
-            const toastElement = new bootstrap.Toast(toast);
-            toastElement.show();
-        }
     </script>
 </body>
 

@@ -8,7 +8,6 @@
     <link rel="icon" href="logo.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         body {
             background-color: #1e1e2f;
@@ -61,29 +60,20 @@
             margin-top: 1rem;
         }
 
-        .hero h1 {
-            font-size: 3.2rem;
-            font-weight: bold;
-        }
-
-        .hero p {
-            font-size: 1.7rem;
-            margin: 20px 0;
-        }
-
-        .hero .btn {
+        .hero .btn, .upload-btn {
             background: #58a6ff;
             color: white;
             font-size: 1.3rem;
             padding: 15px 30px;
             border-radius: 25px;
             box-shadow: 0 4px 10px rgba(88, 166, 255, 0.5);
-            transition: background 0.3s ease, box-shadow 0.3s ease;
+            transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
         }
 
-        .hero .btn:hover {
+        .hero .btn:hover, .hero .btn:focus, .upload-btn:hover, .upload-btn:focus {
             background: #7b92ff;
             box-shadow: 0 6px 15px rgba(123, 146, 255, 0.7);
+            transform: scale(1.05);
         }
 
         .features {
@@ -120,57 +110,6 @@
 
         .footer a:hover {
             color: #7b92ff;
-        }
-
-        #shareForm {
-            background: #1f1f38;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease;
-        }
-
-        #shareForm:hover {
-            transform: translateY(-5px);
-        }
-
-        .form-control {
-            background: #2a2a40;
-            color: #dcdcdc;
-            border: 1px solid #383850;
-            transition: background 0.3s ease, border-color 0.3s ease;
-        }
-
-        .form-control:focus {
-            background: #1f1f38;
-            border-color: #58a6ff;
-            color: #dcdcdc;
-            box-shadow: none;
-        }
-
-        .btn-primary {
-            background: #58a6ff;
-            border: none;
-            transition: background 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background: #7b92ff;
-            box-shadow: 0 4px 10px rgba(123, 146, 255, 0.5);
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1.2rem;
-            }
-
-            .feature-card {
-                margin-bottom: 20px;
-            }
         }
     </style>
 </head>

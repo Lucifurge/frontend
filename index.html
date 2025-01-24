@@ -26,8 +26,12 @@
 
         .navbar-brand {
             font-weight: bold;
-            color: #58a6ff !important;
             font-size: 1.8rem;
+            background: linear-gradient(90deg, #58a6ff, #7b92ff, #a672ff, #ff79c6, #ff6a6a);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow 6s ease infinite;
         }
 
         .navbar-nav .nav-link {
@@ -55,6 +59,11 @@
         .hero h1 {
             font-size: 3.2rem;
             font-weight: bold;
+            background: linear-gradient(90deg, #58a6ff, #7b92ff, #a672ff, #ff79c6, #ff6a6a);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow 6s ease infinite;
         }
 
         .hero p {
@@ -75,6 +84,18 @@
         .hero .btn:hover {
             background: #7b92ff;
             box-shadow: 0 6px 15px rgba(123, 146, 255, 0.7);
+        }
+
+        @keyframes rainbow {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .features {
@@ -111,6 +132,25 @@
 
         .footer a:hover {
             color: #7b92ff;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background: #58a6ff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background: #7b92ff;
+            box-shadow: 0 4px 10px rgba(123, 146, 255, 0.7);
         }
 
         #shareForm {
@@ -205,6 +245,11 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
                     <li class="nav-item"><a class="nav-link" href="#share">Share Post</a></li>
+                    <li class="nav-item">
+                        <label class="upload-btn">Change Background
+                            <input type="file" id="bgUploader" class="file-input" accept="image/*">
+                        </label>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -264,8 +309,23 @@
     </section>
 
     <footer class="footer">
-        <p>&copy; 2025 Pyeulshares. All Rights Reserved. Mady By The Husband of Pyeul Lihm</p>
+        <p>&copy; 2025 Pyeulshares. All Rights Reserved. Made By The Husband of Pyeul Lihm</p>
     </footer>
+<script src="index.js">
+    <script>
+        const bgUploader = document.getElementById("bgUploader");
 
-    <script src="index.js"></script>
+        bgUploader.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.body.style.backgroundImage = `url(${e.target.result})`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 </body>
+
+</html>

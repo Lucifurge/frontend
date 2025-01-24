@@ -7,9 +7,10 @@
     <title>Pyeulshares</title>
     <link rel="icon" href="logo.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
-  body {
+        body {
             background-color: #1e1e2f;
             color: #ffffff;
             font-family: "Fira Code", monospace;
@@ -17,7 +18,7 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
             transition: background 0.5s ease, color 0.5s ease;
-              }
+        }
 
         .navbar {
             background: linear-gradient(90deg, #2c2c54, #212642);
@@ -47,6 +48,10 @@
             transform: scale(1.1);
         }
 
+        .navbar-toggler-icon {
+            background-color: white;
+        }
+
         .hero {
             text-align: center;
             padding: 120px 20px;
@@ -72,165 +77,41 @@
             margin: 20px 0;
         }
 
-        .hero .btn {
-            background: #58a6ff;
-            color: white;
-            font-size: 1.3rem;
-            padding: 15px 30px;
-            border-radius: 25px;
-            box-shadow: 0 4px 10px rgba(88, 166, 255, 0.5);
-            transition: background 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .hero .btn:hover {
-            background: #7b92ff;
-            box-shadow: 0 6px 15px rgba(123, 146, 255, 0.7);
-        }
-
         @keyframes rainbow {
             0% {
                 background-position: 0% 50%;
             }
+
             50% {
                 background-position: 100% 50%;
             }
+
             100% {
                 background-position: 0% 50%;
             }
         }
 
-        .features {
-            padding: 60px 20px;
-        }
+        /* Adjustments for smaller devices */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
 
-        .feature-card {
-            background: #2a2a40;
-            border: 1px solid #383850;
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+            .hero p {
+                font-size: 1.2rem;
+            }
 
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
+            .feature-card {
+                margin-bottom: 20px;
+            }
 
-        .footer {
-            background: linear-gradient(90deg, #212642, #2c2c54);
-            color: #dcdcdc;
-            text-align: center;
-            padding: 20px;
-            border-top: 1px solid #383850;
-        }
+            .navbar-nav {
+                text-align: center;
+            }
 
-        .footer a {
-            color: #58a6ff;
-            margin: 0 10px;
-            transition: color 0.3s ease;
-        }
-
-        .footer a:hover {
-            color: #7b92ff;
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        .upload-btn {
-            background: #58a6ff;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .upload-btn:hover {
-            background: #7b92ff;
-            box-shadow: 0 4px 10px rgba(123, 146, 255, 0.7);
-        }
-
-        #shareForm {
-            background: #1f1f38;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease;
-        }
-
-        #shareForm:hover {
-            transform: translateY(-5px);
-        }
-
-        .form-control {
-            background: #2a2a40;
-            color: #dcdcdc;
-            border: 1px solid #383850;
-            transition: background 0.3s ease, border-color 0.3s ease;
-        }
-
-        .form-control:focus {
-            background: #1f1f38;
-            border-color: #58a6ff;
-            color: #dcdcdc;
-            box-shadow: none;
-        }
-
-        .btn-primary {
-            background: #58a6ff;
-            border: none;
-            transition: background 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background: #7b92ff;
-            box-shadow: 0 4px 10px rgba(123, 146, 255, 0.5);
-        }
-
-        .alert {
-            background: #2a2a40;
-            border: 1px solid #383850;
-            color: #dcdcdc;
-            font-weight: bold;
-            border-radius: 10px;
-        }
-
-        .toast-container {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 1050;
-        }
-
-        .toast {
-            background: #2a2a40;
-            color: #dcdcdc;
-            border: 1px solid #383850;
-            border-radius: 8px;
-        }
-
-        .toast-header {
-            background: #383850;
-            color: #dcdcdc;
-            border-bottom: 1px solid #2a2a40;
-        }
-
-        .progress {
-            height: 25px;
-            border-radius: 15px;
-            overflow: hidden;
-            background: #2a2a40;
-            border: 1px solid #383850;
-            margin-top: 20px;
-        }
-
-        .progress-bar {
-            background: #58a6ff;
-            transition: width 0.5s ease;
+            .navbar-toggler {
+                margin-left: auto;
+            }
         }
     </style>
 </head>
@@ -259,7 +140,7 @@
     <header class="hero">
         <h1>Welcome to Pyeulshares</h1>
         <p>Effortlessly share your posts with our automated tool!</p>
-        <a href="#share" class="btn">Get Started</a>
+        <a href="#share" class="btn btn-primary">Get Started</a>
     </header>
 
     <section id="features" class="container features">
@@ -297,7 +178,7 @@
             </div>
             <div class="mb-3">
                 <label for="interval" class="form-label">Interval (seconds)</label>
-               <input type="number" class="form-control" id="interval" min="0.5" max="9" step="0.5" required>
+                <input type="number" class="form-control" id="interval" min="0.5" max="9" step="0.5" required>
             </div>
             <div class="mb-3">
                 <label for="shares" class="form-label">Shares</label>
@@ -305,14 +186,11 @@
             </div>
             <button id="submit-button" type="submit" class="btn btn-primary">Start Sharing</button>
         </form>
-
-        <div id="progress-container" class="mt-3"></div>
     </section>
 
     <footer class="footer">
         <p>&copy; 2025 Pyeulshares. All Rights Reserved. Made By The Husband of Pyeul Lihm</p>
     </footer>
-  
     <script src="index.js"></script>
    <script>
     const bgUploader = document.getElementById("bgUploader");

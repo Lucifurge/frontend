@@ -268,7 +268,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-       async function updatePing() {
+   async function updatePing() {
     const start = performance.now();
     const pingText = document.querySelector('#ping');
 
@@ -294,7 +294,7 @@ async function handleSubmission(event, buttonId, apiUrl, requestData) {
         return;
     }
     try {
-        button.innerText = 'Submitting';
+        button.innerText = 'Submitting...';
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -302,7 +302,12 @@ async function handleSubmission(event, buttonId, apiUrl, requestData) {
         });
 
         const data = await response.json();
-        button.innerText = data.status === 200 ? 'Submitted' : 'Submit';
+        if (data.status === 200) {
+            button.innerText = 'Submitted';
+        } else {
+            button.innerText = 'Submit';
+            console.error('Submission failed:', data);
+        }
     } catch (error) {
         console.error('Error:', error);
         button.innerText = 'Submit';
@@ -320,7 +325,7 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
     const progressContainer = document.getElementById("progress-container");
     progressContainer.innerHTML = ''; // Reset the container
 
-    let shareCount = 0;
+    let completedShares = 0;
 
     // Create a progress bar for each share
     for (let i = 0; i < shares; i++) {
@@ -336,15 +341,15 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
     }
 
     const progressBars = document.querySelectorAll('.progress-bar');
-    let completedShares = 0;
+    let completedShareCount = 0;
 
-    // Simulate the shares and send the API request for each share
+    // Send API request for each share and update progress bar
     const intervalId = setInterval(function () {
-        if (completedShares < shares) {
-            const progress = (completedShares + 1) / shares * 100;
-            progressBars[completedShares].style.width = `${progress}%`;
+        if (completedShareCount < shares) {
+            const progress = (completedShareCount + 1) / shares * 100;
+            progressBars[completedShareCount].style.width = `${progress}%`;
 
-            // API call for each share
+            // Send API request for each share
             fetch('https://berwin-rest-api-bwne.onrender.com/api/submit', {
                 method: 'POST',
                 headers: {
@@ -357,13 +362,13 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
             })
             .then(response => response.json())
             .then(data => {
-                console.log(`Share ${completedShares + 1} processed`);
+                console.log(`Share ${completedShareCount + 1} processed`);
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Error during share:', error);
             });
 
-            completedShares++;
+            completedShareCount++;
         } else {
             clearInterval(intervalId);
             alert("Sharing process completed!");
@@ -371,6 +376,7 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
     }, interval * 1000); // interval in milliseconds
 });
 
+// Link processing and updating progress for ongoing processes
 async function linkOfProcessing() {
     try {
         const container = document.getElementById('processing');
@@ -435,6 +441,7 @@ linkOfProcessing();
 
 document.getElementById('copy-button').style.display = 'none';
 
+// Login function and copying appstate to clipboard
 document.getElementById('login-form')?.addEventListener('submit', async function (event) {
     event.preventDefault();
     const button = document.getElementById('login-button');
@@ -473,6 +480,7 @@ document.getElementById('copy-button').addEventListener('click', function () {
         alert('Failed to copy appstate. Please try again.');
     });
 });
+
 
     </script>
 </body>

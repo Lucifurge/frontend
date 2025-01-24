@@ -9,9 +9,6 @@ document.getElementById("shareForm").addEventListener("submit", function (e) {
 
     const progressContainer = document.getElementById("progress-container");
 
-    // Reset the progress container for each new submission
-    progressContainer.innerHTML = '';
-
     // Create a new progress bar for this submission
     const progressBarWrapper = document.createElement('div');
     progressBarWrapper.classList.add('mb-3');

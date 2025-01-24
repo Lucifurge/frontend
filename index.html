@@ -9,13 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
-        body {
-            background-color: #1e1e2f;
-            color: #dcdcdc;
-            font-family: "Fira Code", monospace;
-            background-image: linear-gradient(120deg, #1f2937, #111827);
-            background-attachment: fixed;
-            transition: background 0.5s ease;
+   body {
+    background-color: #1e1e2f;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
         }
 
         .navbar {
@@ -322,24 +322,23 @@
             const reader = new FileReader();
 
             reader.onload = (e) => {
-                // Set the background image dynamically
                 document.body.style.backgroundImage = `url('${e.target.result}')`;
                 document.body.style.backgroundSize = "cover"; // Ensure it covers the whole screen
                 document.body.style.backgroundRepeat = "no-repeat"; // Avoid repeating the image
-                document.body.style.backgroundAttachment = "fixed"; // Make it fixed like the original gradient
+                document.body.style.backgroundAttachment = "fixed"; // Keep it fixed
             };
 
-            reader.onerror = (err) => {
-                console.error("Error reading file:", err);
-                alert("Could not load the image. Please try a different file.");
+            reader.onerror = () => {
+                alert("Failed to load the image. Please try again with a valid image.");
             };
 
             reader.readAsDataURL(file);
         } else {
-            alert("No file selected. Please select a valid image.");
+            alert("No file selected. Please select an image.");
         }
     });
 </script>
+
 
 </body>
 

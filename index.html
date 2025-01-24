@@ -11,11 +11,12 @@
     <style>
         body {
             background-color: #1e1e2f;
-            color: #dcdcdc;
+            color: #ffffff;
             font-family: "Fira Code", monospace;
-            background-image: linear-gradient(120deg, #1f2937, #111827);
+            background-size: cover;
+            background-repeat: no-repeat;
             background-attachment: fixed;
-            transition: background 0.5s ease;
+            transition: background 0.5s ease, color 0.5s ease;
         }
 
         .navbar {
@@ -60,7 +61,9 @@
             margin-top: 1rem;
         }
 
-        .hero .btn, .upload-btn {
+        .hero .btn,
+        .upload-btn,
+        .btn-primary {
             background: #58a6ff;
             color: white;
             font-size: 1.3rem;
@@ -70,7 +73,12 @@
             transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
         }
 
-        .hero .btn:hover, .hero .btn:focus, .upload-btn:hover, .upload-btn:focus {
+        .hero .btn:hover,
+        .hero .btn:focus,
+        .upload-btn:hover,
+        .upload-btn:focus,
+        .btn-primary:hover,
+        .btn-primary:focus {
             background: #7b92ff;
             box-shadow: 0 6px 15px rgba(123, 146, 255, 0.7);
             transform: scale(1.05);
@@ -111,6 +119,46 @@
         .footer a:hover {
             color: #7b92ff;
         }
+
+        #shareForm {
+            background: #1f1f38;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        #shareForm:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-control {
+            background: #2a2a40;
+            color: #dcdcdc;
+            border: 1px solid #383850;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: #1f1f38;
+            border-color: #58a6ff;
+            color: #dcdcdc;
+            box-shadow: none;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .feature-card {
+                margin-bottom: 20px;
+            }
+        }
     </style>
 </head>
 
@@ -125,6 +173,11 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
                     <li class="nav-item"><a class="nav-link" href="#share">Share Post</a></li>
+                    <li class="nav-item">
+                        <label class="upload-btn">Change Background
+                            <input type="file" id="bgUploader" class="file-input" accept="image/*" style="display: none;">
+                        </label>
+                    </li>
                 </ul>
             </div>
         </div>

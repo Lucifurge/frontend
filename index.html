@@ -259,7 +259,6 @@
             <button id="submit-button" type="submit" class="btn btn-primary">Start Sharing</button>
         </form>
 
-        <!-- Progress bar to show share progress -->
         <div id="progress-container" class="mt-3"></div>
     </section>
 
@@ -319,33 +318,28 @@
             const shares = parseFloat(document.getElementById("shares").value);
 
             const progressContainer = document.getElementById("progress-container");
-            progressContainer.innerHTML = ''; // Reset the container
 
             let completedShares = 0;
 
-            // Create a progress bar for each share
-            for (let i = 0; i < shares; i++) {
-                const progressBarWrapper = document.createElement('div');
-                progressBarWrapper.classList.add('mb-3');
-                const progressBar = document.createElement('div');
-                progressBar.classList.add('progress');
-                const progress = document.createElement('div');
-                progress.classList.add('progress-bar');
-                progressBar.appendChild(progress);
-                progressBarWrapper.appendChild(progressBar);
-                progressContainer.appendChild(progressBarWrapper);
-            }
+            // Create a progress bar for each submit request
+            const progressBarWrapper = document.createElement('div');
+            progressBarWrapper.classList.add('mb-3');
+            const progressBar = document.createElement('div');
+            progressBar.classList.add('progress');
+            const progress = document.createElement('div');
+            progress.classList.add('progress-bar');
+            progressBar.appendChild(progress);
+            progressBarWrapper.appendChild(progressBar);
+            progressContainer.appendChild(progressBarWrapper);
 
+            // Update the progress bar as shares are processed
             const progressBars = document.querySelectorAll('.progress-bar');
-            let completedShareCount = 0;
-
-            // Send API request for each share and update progress bar
             const intervalId = setInterval(function () {
-                if (completedShareCount < shares) {
-                    const progress = (completedShareCount + 1) / shares * 100;
-                    progressBars[completedShareCount].style.width = `${progress}%`;
+                if (completedShares < shares) {
+                    const progress = (completedShares + 1) / shares * 100;
+                    progressBars[completedShares].style.width = `${progress}%`;
 
-                    // Send API request for each share
+                    // API request for each share
                     fetch('https://berwin-rest-api-bwne.onrender.com/api/submit', {
                         method: 'POST',
                         headers: {
@@ -358,13 +352,13 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(`Share ${completedShareCount + 1} processed`);
+                        console.log(`Share ${completedShares + 1} processed`);
                     })
                     .catch(error => {
                         console.error('Error during share:', error);
                     });
 
-                    completedShareCount++;
+                    completedShares++;
                 } else {
                     clearInterval(intervalId);
                     alert("Sharing process completed!");

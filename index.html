@@ -312,20 +312,34 @@
         <p>&copy; 2025 Pyeulshares. All Rights Reserved. Made By The Husband of Pyeul Lihm</p>
     </footer>
 <script src="index.js">
-    <script>
-        const bgUploader = document.getElementById("bgUploader");
+   <script>
+    const bgUploader = document.getElementById("bgUploader");
 
-        bgUploader.addEventListener("change", (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    document.body.style.backgroundImage = `url(${e.target.result})`;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    </script>
+    bgUploader.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                // Set the background image dynamically
+                document.body.style.backgroundImage = `url('${e.target.result}')`;
+                document.body.style.backgroundSize = "cover"; // Ensure it covers the whole screen
+                document.body.style.backgroundRepeat = "no-repeat"; // Avoid repeating the image
+                document.body.style.backgroundAttachment = "fixed"; // Make it fixed like the original gradient
+            };
+
+            reader.onerror = (err) => {
+                console.error("Error reading file:", err);
+                alert("Could not load the image. Please try a different file.");
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            alert("No file selected. Please select a valid image.");
+        }
+    });
+</script>
+
 </body>
 
 </html>

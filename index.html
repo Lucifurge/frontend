@@ -18,8 +18,7 @@
             background-attachment: fixed;
             transition: background 0.5s ease, color 0.5s ease;
         }
-
-        .navbar {
+ .navbar {
             background: linear-gradient(90deg, #2c2c54, #212642);
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
             padding: 0.8rem 1.5rem;
@@ -27,8 +26,26 @@
 
         .navbar-brand {
             font-weight: bold;
-            color: #58a6ff !important;
             font-size: 1.8rem;
+            background: linear-gradient(90deg, #58a6ff, #7b92ff, #a672ff, #ff79c6, #ff6a6a);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow 6s ease infinite;
+        }
+
+        @keyframes rainbow {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .navbar-nav .nav-link {
@@ -53,7 +70,7 @@
 
         .hero {
             text-align: center;
-            padding: 120px 20px;
+            padding: 100px 20px;
             background: linear-gradient(180deg, rgba(30, 30, 47, 0.95), rgba(18, 18, 32, 0.95));
             border-radius: 15px;
             color: white;
@@ -61,38 +78,50 @@
             margin-top: 1rem;
         }
 
-        .hero .btn,
-        .upload-btn,
-        .btn-primary {
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #58a6ff, #7b92ff, #a672ff, #ff79c6, #ff6a6a);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow 6s ease infinite;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin: 20px 0;
+        }
+
+        .btn,
+        .upload-btn {
             background: #58a6ff;
             color: white;
-            font-size: 1.3rem;
-            padding: 15px 30px;
+            font-size: 1rem;
+            padding: 10px 20px;
             border-radius: 25px;
             box-shadow: 0 4px 10px rgba(88, 166, 255, 0.5);
             transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
         }
 
-        .hero .btn:hover,
-        .hero .btn:focus,
+        .btn:hover,
+        .btn:focus,
         .upload-btn:hover,
-        .upload-btn:focus,
-        .btn-primary:hover,
-        .btn-primary:focus {
+        .upload-btn:focus {
             background: #7b92ff;
             box-shadow: 0 6px 15px rgba(123, 146, 255, 0.7);
             transform: scale(1.05);
         }
 
         .features {
-            padding: 60px 20px;
+            padding: 40px 20px;
         }
 
         .feature-card {
             background: #2a2a40;
             border: 1px solid #383850;
             border-radius: 12px;
-            padding: 25px;
+            padding: 20px;
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -122,7 +151,7 @@
 
         #shareForm {
             background: #1f1f38;
-            padding: 40px;
+            padding: 30px;
             border-radius: 12px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
             transition: transform 0.3s ease;
@@ -148,11 +177,11 @@
 
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.3rem;
             }
 
             .hero p {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
             }
 
             .feature-card {
